@@ -15,15 +15,11 @@
   - name: install retghinkdb
     apt: name=rethinkdb state=present
   - name: copy rethinkdb config file
-    copy: src=default.conf dest=/etc/rethinkdb/instances.d/default.conf 
+    copy: src=default.conf dest=/etc/rethinkdb/instances.d/default.conf
     notify: init rethinkdb
-  - name: copy code
-    synchronize: src=testapp dest=/opt
-#delete=yes rsync_path="rsync"
 
   handlers:
   - name: init rethinkdb
     shell: /etc/init.d/rethinkdb start
   - name: restart rethinkdb
     service: name=rethinkdb state=restarted
-  
