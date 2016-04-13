@@ -6,3 +6,5 @@ config/local.json
 .vagrant
 
 ansible/playbook.retry
+
+npm-debug.log
