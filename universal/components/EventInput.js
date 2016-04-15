@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Dropzone from 'react-dropzone';
 import { VALUE_CLASSES } from '../constants/ActionTypes.js';
 
 export default class EventInput extends Component {
@@ -17,6 +18,8 @@ export default class EventInput extends Component {
       errors: [],
       text: this.props.text || '',
       name: this.props.name || '',
+      files: this.props.files || '',
+      images: this.props.images || '',
       value: this.props.value || 50
     };
   }
@@ -36,7 +39,7 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({text: this.state.text, name: this.state.name, value: this.state.value, userId: this.props.userId});
+      this.props.onSubmit({text: this.state.text, name: this.state.name, files: this.state.files, images: this.state.images, value: this.state.value, userId: this.props.userId});
       this.setState({text: '', value: 50});
     }
   }
@@ -53,6 +56,15 @@ export default class EventInput extends Component {
     this.setState({ value: parseInt(e.target.value, 10) });
   }
 
+  handleImagesChange(e) {
+    this.setState({ images: e.target.files[0] });
+  }
+
+  onDrop(files) {
+    this.setState({ files: files });
+    console.log('Received files: ', files);
+  }
+
   render() {
     let self = this;
     let saveText = (this.props.editing) ? 'Save' : 'Add';
@@ -65,13 +77,17 @@ export default class EventInput extends Component {
     }, null);
 
     return (
-      <form className='Pulse-eventInput pure-form'>
+      <form className='Pulse-eventInput pure-form' enctype="multipart/form-data">
         <fieldset>
           <input type='text' placeholder={this.props.textLabel} autoFocus='true' value={this.state.text} onChange={::this.handleTextChange} />
           <input type='text' placeholder={this.props.nameLabel} value={this.state.name} onChange={::this.handleNameChange} />
           <label htmlFor='value'>{this.props.valueLabel}</label>
           <input className={className} type='range' id='value' min='1' max='100' value={this.state.value} onChange={::this.handleValueChange} />
           <span className='Pulse-eventInput-value'>{this.state.value}</span>
+          <input type="file" name="images" onChange={::this.handleImagesChange} />
+          <Dropzone onDrop={::this.onDrop}>
+            <div>Try dropping some files here, or click to select files to upload.</div>
+          </Dropzone>
           <button type='submit' className='save pure-button' onClick={::this.handleSubmit}>{saveText}</button>
         </fieldset>
       </form>

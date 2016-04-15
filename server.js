@@ -23,9 +23,10 @@ app.set('view engine', 'ejs');
  */
 app.use(require('serve-static')(path.join(__dirname, config.get('buildDirectory'))));
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  limit: '50mb'
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 /**
  * API Endpoints

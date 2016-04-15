@@ -1,4 +1,6 @@
 import * as service from './service/event';
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
 
 export function getEvents(req, res) {
   service.getEvents()
@@ -11,6 +13,7 @@ export function getEvents(req, res) {
 
 export function addEvent(req, res) {
   service.addEvent(req.body)
+  .then(() => console.log(req.body))
   .then((event) => res.json(event))
   .catch(err => {
     res.status(400);
