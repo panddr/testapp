@@ -22,11 +22,12 @@ app.set('view engine', 'ejs');
  * Server middleware
  */
 app.use(require('serve-static')(path.join(__dirname, config.get('buildDirectory'))));
+app.use(express.static(__dirname + '/public'));
+app.use('/images', express.static(__dirname + '/public/images'));
 app.use(bodyParser.urlencoded({
-  extended: true,
-  limit: '50mb'
+  extended: true
 }));
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json());
 
 /**
  * API Endpoints

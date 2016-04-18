@@ -18,7 +18,6 @@ export default class EventInput extends Component {
       errors: [],
       text: this.props.text || '',
       name: this.props.name || '',
-      files: this.props.files || '',
       images: this.props.images || '',
       value: this.props.value || 50
     };
@@ -39,7 +38,7 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({text: this.state.text, name: this.state.name, files: this.state.files, images: this.state.images, value: this.state.value, userId: this.props.userId});
+      this.props.onSubmit({text: this.state.text, name: this.state.name, images: this.state.images, value: this.state.value, userId: this.props.userId});
       this.setState({text: '', value: 50});
     }
   }
@@ -77,17 +76,14 @@ export default class EventInput extends Component {
     }, null);
 
     return (
-      <form className='Pulse-eventInput pure-form' enctype="multipart/form-data">
+      <form className='Pulse-eventInput pure-form' encType="multipart/form-data" method="post" action="/api/0/events">
         <fieldset>
           <input type='text' placeholder={this.props.textLabel} autoFocus='true' value={this.state.text} onChange={::this.handleTextChange} />
           <input type='text' placeholder={this.props.nameLabel} value={this.state.name} onChange={::this.handleNameChange} />
           <label htmlFor='value'>{this.props.valueLabel}</label>
           <input className={className} type='range' id='value' min='1' max='100' value={this.state.value} onChange={::this.handleValueChange} />
           <span className='Pulse-eventInput-value'>{this.state.value}</span>
-          <input type="file" name="images" onChange={::this.handleImagesChange} />
-          <Dropzone onDrop={::this.onDrop}>
-            <div>Try dropping some files here, or click to select files to upload.</div>
-          </Dropzone>
+          <input type="file" name="images" multiple="true" onChange={::this.handleImagesChange} />
           <button type='submit' className='save pure-button' onClick={::this.handleSubmit}>{saveText}</button>
         </fieldset>
       </form>

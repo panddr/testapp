@@ -36,6 +36,7 @@ export default class EventItem extends Component {
 
   render() {
     const { row, id, event, editEvent, deleteEvent } = this.props;
+    const imageUrl = 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + event.images;
 
     let element, className = (row % 2 === 0) ? 'even' : 'odd';
     let modified = (event.updated) ? event.updated : event.created;
@@ -61,6 +62,7 @@ export default class EventItem extends Component {
             {event.text}
           </p>
           {event.name}
+          <img src={imageUrl} />
           {del}
           <p className='created'>{moment(modified).locale('ru').fromNow()}</p>
           <p className='outcome'>{event.value}</p>

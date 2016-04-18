@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var nib = require('nib');
 
 var config = require('config');
@@ -22,6 +23,7 @@ var plugins = [
   defineEnvPlugin,
   new ExtractTextPlugin('style.css'),
   new webpack.NoErrorsPlugin()
+  // new CopyWebpackPlugin([{ from: "./public/" }])
 ];
 
 var moduleLoaders = [
@@ -37,6 +39,10 @@ var moduleLoaders = [
   }, {
     test: /\.styl?$/,
     loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader'),
+    include: __dirname
+  }, {
+    test: /\.(png|jpg)$/,
+    loader: 'url-loader?limit=8192',
     include: __dirname
   }
 ];
@@ -63,6 +69,10 @@ if (isDev) {
     }, {
       test: /\.styl?$/,
       loaders: [ 'style-loader', 'css-loader', 'stylus-loader' ],
+      include: __dirname
+    }, {
+      test: /\.(png|jpg)$/,
+      loader: 'url-loader?limit=8192',
       include: __dirname
     }
   ];

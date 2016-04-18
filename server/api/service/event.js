@@ -32,11 +32,12 @@ export function getEvents() {
   });
 }
 
-export function addEvent(event) {
+export function addEvent(file, event) {
   return connect()
   .then(conn => {
     event.created = new Date();
     event.text = xss(event.text);
+    event.images = file;
     return r
     .table('pulses')
     .insert(event).run(conn)

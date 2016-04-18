@@ -8,3 +8,7 @@ config/local.json
 ansible/playbook.retry
 
 npm-debug.log
+
+*.jpg
+
+public/images/

@@ -48,18 +48,43 @@ export function loadEventsFailure(error) {
 }
 
 export function addEvent(event) {
-  console.log('Add event', event);
   return dispatch => {
     dispatch(addEventRequest(event));
 
+    // const form = new FormData();
+
+    // // for (var i = 0; i < event.images.length; i++) {
+    //   form.append("images", event.images[0]);
+    // // }
+
+    // return request
+    //   .post(eventsUrl)
+    //   .attach("images", event.images[0])
+    //   .end((err, res) => {
+    //     if (err) {
+    //       dispatch(addEventFailure(err, event));
+    //     } else {
+    //       dispatch(addEventSuccess(res.body));
+    //     }
+    //   });
+
+
     return request
       .post(eventsUrl)
-      .send(event)
+      // .send(event)
       .set('Accept', 'application/json')
+      .field('text', event.text)
+      .field('name', event.name)
+      .field('value', event.value)
+      .field('userId', event.userId)
+      .attach('images', event.images)
       .end((err, res) => {
         if (err) {
           dispatch(addEventFailure(err, event));
+          console.log(err)
         } else {
+          console.log(res.body)
+          console.log(res.file)
           dispatch(addEventSuccess(res.body));
         }
       });
@@ -94,6 +119,7 @@ export function deleteEvent(event) {
     return request
       .del(eventsUrl + '/' + event.id)
       .set('Accept', 'application/json')
+      .set('images', event.images)
       .end((err, res) => {
         if (err) {
           dispatch(deleteEventFailure(err, event));
