@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
-import { VALUE_CLASSES } from '../constants/ActionTypes.js';
 
 export default class EventInput extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    userId: PropTypes.string.isRequired,
-    textLabel: PropTypes.string,
-    nameLabel: PropTypes.string,
-    valueLabel: PropTypes.string,
+    onImageSubmit: PropTypes.func.isRequired,
+    titleLabel: PropTypes.string,
+    descriptionLabel: PropTypes.string,
     editing: PropTypes.bool
   };
 
@@ -16,10 +14,10 @@ export default class EventInput extends Component {
     super(props, context);
     this.state = {
       errors: [],
-      text: this.props.text || '',
-      name: this.props.name || '',
-      images: this.props.images || '',
-      value: this.props.value || 50
+      title: this.props.title || '',
+      description: this.props.description || '',
+      images: this.props.images || [],
+      uploadedImages: this.props.uploadedImages || []
     };
   }
 
@@ -27,66 +25,82 @@ export default class EventInput extends Component {
     let errors;
     e.preventDefault();
 
-    if (this.state.text.length === 0) {
+    if (this.state.title.length === 0) {
       errors = ['You have not said what happened!'];
-    }
-
-    if (this.state.value < 1 || this.state.value > 100) {
-      errors = [...errors, 'You have somewhere set an invalid value!'];
     }
 
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({text: this.state.text, name: this.state.name, images: this.state.images, value: this.state.value, userId: this.props.userId});
-      this.setState({text: '', value: 50});
+      this.props.onSubmit({title: this.state.title, description: this.state.description, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.state.images});
+      this.setState({title: ''});
     }
   }
 
-  handleTextChange(e) {
-    this.setState({ text: e.target.value });
+  handleTitleChange(e) {
+    this.setState({ title: e.target.value });
   }
 
-  handleNameChange(e) {
-    this.setState({ name: e.target.value });
+  handleDescriptionChange(e) {
+    this.setState({ description: e.target.value });
   }
 
-  handleValueChange(e) {
-    this.setState({ value: parseInt(e.target.value, 10) });
-  }
-
-  handleImagesChange(e) {
-    this.setState({ images: e.target.files[0] });
+  handleCaptionChange(index, image, e) {
+    image.caption = e.target.value;
+    const images = this.state.images.slice();
+    images.splice(index,1,image);
+    this.setState({ images: images });
   }
 
   onDrop(files) {
-    this.setState({ files: files });
-    console.log('Received files: ', files);
+    this.props.onImageSubmit({files: files});
+
+    setTimeout(() => {
+      this.setState({
+        images: this.props.images
+      });
+    }, 3000)
   }
 
   render() {
+    console.log('images',this.state.images)
     let self = this;
-    let saveText = (this.props.editing) ? 'Save' : 'Add';
-    let className = Object.keys(VALUE_CLASSES).reduce((current, key) => {
-      if (!current && self.state.value <= key) {
-        return VALUE_CLASSES[key];
-      } else {
-        return current;
-      }
-    }, null);
+    let saveText = (this.props.editing) ? 'Сохранить' : 'Добавить';
 
     return (
-      <form className='Pulse-eventInput pure-form' encType="multipart/form-data" method="post" action="/api/0/events">
-        <fieldset>
-          <input type='text' placeholder={this.props.textLabel} autoFocus='true' value={this.state.text} onChange={::this.handleTextChange} />
-          <input type='text' placeholder={this.props.nameLabel} value={this.state.name} onChange={::this.handleNameChange} />
-          <label htmlFor='value'>{this.props.valueLabel}</label>
-          <input className={className} type='range' id='value' min='1' max='100' value={this.state.value} onChange={::this.handleValueChange} />
-          <span className='Pulse-eventInput-value'>{this.state.value}</span>
-          <input type="file" name="images" multiple="true" onChange={::this.handleImagesChange} />
-          <button type='submit' className='save pure-button' onClick={::this.handleSubmit}>{saveText}</button>
-        </fieldset>
-      </form>
+      <div>
+        <form className='form' encType="multipart/form-data" method="post" action="/api/0/events">
+          <fieldset>
+            <input type='text' placeholder={this.props.titleLabel} value={this.state.title} onChange={::this.handleTitleChange} />
+            <textarea placeholder={this.props.descriptionLabel} value={this.state.description} onChange={::this.handleDescriptionChange} />
+            {this.props.editing ?
+              <Dropzone
+                onDrop={::this.onDrop}
+                onImageSubmit={this.props.onImageSubmit}
+                accept={'image/*'}
+                disableClick >
+                <div>Try dropping some files here, or click to select files to upload.</div>
+              </Dropzone>
+              : null}
+            {this.props.images.length > 0 ?
+              <div>{this.props.images.map((image, index) => {
+                const url = 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + image.key;
+                const key = image.key
+                const dimensions = image.dimensions
+
+                return (
+                  <div key={index}>
+                    <img src={url} className={dimensions} />
+                    <input value={image.caption} onChange={ this.handleCaptionChange.bind(this, index, image) } />
+                  </div>
+                )
+              })}
+              </div>
+              : null}
+            <button type='submit' className='button' onClick={::this.handleSubmit}>{saveText}</button>
+          </fieldset>
+        </form>
+      </div>
     );
   }
 }

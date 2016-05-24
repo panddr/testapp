@@ -3,7 +3,7 @@ import config from 'config';
 
 const rethinkdb = config.get('rethinkdb');
 let DATABASE = rethinkdb.db || 'pulse';
-let TABLES = ['pulses']; 
+let TABLES = ['pulses'];
 
 r.connect(rethinkdb)
 .then(conn => {
@@ -34,7 +34,8 @@ function createTableIfNotExists(conn, table) {
       console.log(' [!] Table already exists:', table);
       return Promise.resolve(true);
     }
-  });
+  })
+  .then(() => createIndex(conn, table, 'slug'))
 }
 
 function getDbList(conn) {
@@ -53,6 +54,11 @@ function createDatabase(conn) {
 function createTable(conn, table) {
   console.log(' [-] Create Table:', table);
   return r.db(DATABASE).tableCreate(table).run(conn);
+}
+
+function createIndex(conn, table, index) {
+  console.log(' [-] Create Index:', index);
+  return r.db(DATABASE).table(table).indexCreate(index).run(conn);
 }
 
 function closeConnection(conn) {

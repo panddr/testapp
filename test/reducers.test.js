@@ -17,11 +17,11 @@ describe('Reducers', () => {
   /**
    * Example of writing a test on a reducing functiom
    */
-  describe('setUserId', () => {
+  describe('getLogin', () => {
     it('should set user id', () => {
       let initialStateForTest = { userId: null };
       let userId = 234;
-      let action = actions.setUserId(userId);
+      let action = actions.getLogin(userId);
 
       expect(initialStateForTest.userId).to.be.null;
 

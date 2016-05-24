@@ -18,7 +18,7 @@ export default class EventList extends Component {
     let cumulative = myEvents.reduce((x, event) =>  event.value + x, 0);
     let average = (myEvents.length > 0) ? Math.round(cumulative/myEvents.length): 0;
 
-    
+
 
     if (myEvents.length > 0) {
       list = myEvents.map((event, key) =>
@@ -36,11 +36,6 @@ export default class EventList extends Component {
       <section className='Pulse-eventList'>
         <div className='Pulse-eventList-summary'>
           <span>Your Events</span>
-          <span className='val'>{myEvents.length}</span>
-          <span>Avg.</span>
-          <span className='val'>{average}</span>
-          <span>Cum.</span>
-          <span className='val'>{cumulative}</span>
         </div>
 
         <div className='Pulse-eventList-list'>

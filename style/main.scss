@@ -1,0 +1,68 @@
+@import "variables";
+@import "mixins";
+@import "spinner";
+
+body {
+  display: flex;
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  margin: 0; padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.portfolio-container {
+  padding: $grid;
+}
+
+ul {
+  list-style: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+}
+
+.portfolio-project-item {
+  margin-bottom: $grid*6;
+  img {
+    display: block;
+    width: 300px;
+  }
+}
+
+.form {
+  img {
+    width: 300px;
+  }
+}
+
+form {
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+}
+
+.portfolio-login {
+  > .overlay {
+    // position: fixed;
+    // top: 0; left: 0;
+    // z-index: 1;
+
+    background: white;
+    width: 100%;
+    height: 100%;
+
+    > form {
+      max-width: 280px;
+      margin: auto;
+      padding-top: $grid*2;
+    }
+  }
+}

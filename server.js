@@ -23,11 +23,13 @@ app.set('view engine', 'ejs');
  */
 app.use(require('serve-static')(path.join(__dirname, config.get('buildDirectory'))));
 app.use(express.static(__dirname + '/public'));
-app.use('/images', express.static(__dirname + '/public/images'));
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  limit: '5mb'
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+  limit: '5mb'
+}));
 
 /**
  * API Endpoints
@@ -36,6 +38,9 @@ app.get('/api/0/events', api.getEvents);
 app.post('/api/0/events', api.addEvent);
 app.post('/api/0/events/:id', api.editEvent);
 app.delete('/api/0/events/:id', api.deleteEvent);
+// app.get('/project/:slug', api.getEvent);
+app.post('/api/0/images', api.uploadImage);
+app.delete('/api/0/images', api.deleteImage);
 
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'images', 'favicon.ico')));
 

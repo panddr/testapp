@@ -4,7 +4,9 @@ import EventItem from './EventItem';
 export default class EventTicker extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
-    length: PropTypes.number.isRequired
+    actions: PropTypes.object.isRequired,
+    uploadImage: React.PropTypes.func.isRequired,
+    uploadedImages: React.PropTypes.array.isRequired
   };
 
   render() {
@@ -12,24 +14,17 @@ export default class EventTicker extends Component {
 
     const otherEvents = events.filter(row => row.userId !== userId );
 
-    let cumulative = otherEvents.reduce((x, event) =>  event.value + x, 0);
-    let average = (otherEvents.length > 0) ? Math.round(cumulative/otherEvents.length) : 0;
-    let editable = false;
+    let editable = true;
 
     return (
       <section className='Pulse-eventList'>
         <div className='Pulse-eventList-summary'>
           <span>Other Events</span>
-          <span className='val'>{otherEvents.length}</span>
-          <span>Avg.</span>
-          <span className='val'>{average}</span>
-          <span>Cum.</span>
-          <span className='val'>{cumulative}</span>
         </div>
         <div className='Pulse-eventList-list'>
           <ul>
             {otherEvents.slice(0,this.props.length).map((event, key) =>
-              <EventItem key={key} row={key} id={event.id} event={event} editable={editable} />
+              <EventItem key={key} row={key} id={event.id} event={event} editable={editable} uploadImage={this.props.uploadImage} uploadedImages={this.props.uploadedImages} {...actions} />
             )}
           </ul>
         </div>

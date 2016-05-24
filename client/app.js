@@ -2,7 +2,8 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { Router, Route } from 'react-router';
 
-import { getOrSetUserId } from './UserId';
+import { getLogin } from './GetLogin';
+import { getOrSetUserLogin } from './Login';
 import { setupRealtime } from './Realtime';
 
 import routes from '../universal/routes';
@@ -11,9 +12,8 @@ import * as actions from '../universal/actions/PulseActions';
 
 import Root from '../universal/containers/root';
 
-import '../style/pure.css';
-import '../style/main.styl';
-import '../style/spinner.styl';
+import '../style/main.scss';
+import 'normalize.css';
 
 
 ReactDOM.render(
@@ -25,4 +25,6 @@ ReactDOM.render(
 setupRealtime(store, actions);
 
 // lets mutate state and set UserID as key from local storage
-store.dispatch(actions.setUserId(getOrSetUserId()));
+store.dispatch(actions.getLogin(getLogin()));
+
+// store.dispatch(actions.submitLogin(getOrSetUserLogin()));

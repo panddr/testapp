@@ -1,8 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var nib = require('nib');
+var autoprefixer = require('autoprefixer');
 
 var config = require('config');
 
@@ -22,8 +21,12 @@ var output = {
 var plugins = [
   defineEnvPlugin,
   new ExtractTextPlugin('style.css'),
+  new webpack.optimize.UglifyJsPlugin({
+    compressor: {
+      warnings: false
+    }
+  }),
   new webpack.NoErrorsPlugin()
-  // new CopyWebpackPlugin([{ from: "./public/" }])
 ];
 
 var moduleLoaders = [
@@ -34,15 +37,11 @@ var moduleLoaders = [
     include: __dirname
   }, {
     test: /\.css?$/,
-    loaders: [ ExtractTextPlugin.extract('style-loader', 'css-loader'), 'raw' ],
+    loaders: [ ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader'), 'raw' ],
     include: __dirname
   }, {
-    test: /\.styl?$/,
-    loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader'),
-    include: __dirname
-  }, {
-    test: /\.(png|jpg)$/,
-    loader: 'url-loader?limit=8192',
+    test: /\.scss?$/,
+    loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader']),
     include: __dirname
   }
 ];
@@ -67,12 +66,8 @@ if (isDev) {
       loaders: [ 'style-loader', 'css-loader' ],
       include: __dirname
     }, {
-      test: /\.styl?$/,
-      loaders: [ 'style-loader', 'css-loader', 'stylus-loader' ],
-      include: __dirname
-    }, {
-      test: /\.(png|jpg)$/,
-      loader: 'url-loader?limit=8192',
+      test: /\.scss?$/,
+      loaders: [ 'style', 'css', 'sass', 'postcss-loader' ],
       include: __dirname
     }
   ];
@@ -86,7 +81,7 @@ module.exports = {
   module: {
     loaders: moduleLoaders
   },
-  stylus: {
-    use: [ nib() ]
+  postcss: function () {
+    return [autoprefixer];
   }
 };

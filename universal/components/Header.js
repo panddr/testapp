@@ -10,6 +10,7 @@ export default class Header extends Component {
             <IndexLink to='/' activeClassName='active'>All Events</IndexLink>
             <Link to='/my-events' activeClassName='active'>My Events</Link>
             <Link to='/other-events' activeClassName='active'>Other Events</Link>
+            <Link to='/login' activeClassName='active'>Login</Link>
           </div>
         </header>
       </div>

@@ -1,15 +1,17 @@
 import React, {PropTypes, Component} from 'react';
 import moment from 'moment';
 import EventInput from './EventInput';
+import { Link } from 'react-router';
 
 export default class EventItem extends Component {
   static propTypes = {
     id: PropTypes.any.isRequired,
-    row: PropTypes.number.isRequired,
     event: PropTypes.object.isRequired,
     editable: PropTypes.bool,
     editEvent: PropTypes.func,
-    deleteEvent: PropTypes.func
+    deleteEvent: PropTypes.func,
+    uploadImage: PropTypes.func,
+    uploadedImages: PropTypes.array
   };
 
   constructor(props, context){
@@ -26,7 +28,7 @@ export default class EventItem extends Component {
   }
 
   handleSave(event) {
-    if (event.text.length === 0) {
+    if (event.title.length === 0) {
       this.props.deleteEvent(event);
     } else {
       this.props.editEvent(event);
@@ -35,43 +37,49 @@ export default class EventItem extends Component {
   }
 
   render() {
-    const { row, id, event, editEvent, deleteEvent } = this.props;
-    const imageUrl = 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + event.images;
+    const { id, event, editEvent, deleteEvent } = this.props;
 
-    let element, className = (row % 2 === 0) ? 'even' : 'odd';
+    let element;
     let modified = (event.updated) ? event.updated : event.created;
+
+    const imageUrl = (event.images.length > 0) ? 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + event.images[0].key : null;
+
+    const link = '/project/' + event.slug;
+
+    let images = this.props.uploadedImages.concat(event.images);
 
     if (this.state.editing) {
       element = (
-        <EventInput text={event.text}
-                    name={event.name}
-                    value={event.value}
-                    userId={event.userId}
+        <EventInput title={event.title}
+                    description={event.description}
+                    images={images}
+                    uploadedImages={this.props.uploadedImages}
                     editing={this.state.editing}
-                    valueLabel='Rating'
-                    onSubmit={ (event) => this.handleSave(Object.assign({}, event, { id: id })) } />
+                    onSubmit={ (event) => this.handleSave(Object.assign({}, event, { id: id })) }
+                    onImageSubmit={ this.props.uploadImage } />
       );
     } else {
       let del = (this.props.editable) ?
         <button className='destroy pure-button' onClick={ () => deleteEvent(event) } /> :
         null;
       element = (
-        <div className='Pulse-eventItem'>
-          <p className='rowNumber'>{row+1}.</p>
+        <div className='portfolio-project-item'>
+          <Link to={link}>{event.title}</Link>
           <p className='title' onClick={::this.handleClick}>
-            {event.text}
+            {event.title}
           </p>
-          {event.name}
-          <img src={imageUrl} />
+          {event.images.length > 0 ?
+            <div>
+              <img src={imageUrl} />
+            </div>
+            : null}
           {del}
-          <p className='created'>{moment(modified).locale('ru').fromNow()}</p>
-          <p className='outcome'>{event.value}</p>
         </div>
       );
     }
 
     return (
-      <li className={className}>{element}</li>
+      <li>{element}</li>
     );
   }
 }

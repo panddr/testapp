@@ -1,15 +1,30 @@
 import * as types from '../constants/ActionTypes';
 import request from 'superagent';
+// import { getOrSetUserLogin } from '../client/UserId';
 
 const serverUrl = '';
 const eventsUrl = `${serverUrl}/api/0/events`;
+const imagesUrl = `${serverUrl}/api/0/images`;
 
-export function setUserId(userId) {
+
+//login
+
+export function getLogin(isLoggedIn) {
   return {
-    type: types.SET_USER_ID,
-    userId
+    type: types.GET_LOGIN,
+    isLoggedIn
   };
 }
+
+export function submitLogin(isLoggedIn) {
+  window.localStorage.setItem('isLoggedIn', isLoggedIn);
+  return {
+    type: types.SUBMIT_LOGIN,
+    isLoggedIn
+  };
+}
+
+//load events
 
 export function loadEvents() {
   return dispatch => {
@@ -47,44 +62,105 @@ export function loadEventsFailure(error) {
   };
 }
 
+
+// upload images
+
+export function uploadImage(event) {
+  console.log(event)
+  return dispatch => {
+    dispatch(uploadImageRequest(event));
+
+    const req = request
+      .post(imagesUrl)
+    event.files.forEach((file)=> {
+      req.attach('file', file);
+    });
+
+    return req.end((err, res) => {
+      if (err) {
+        dispatch(uploadImageFailure(err, event));
+        console.log(err)
+      } else {
+        console.log(res)
+        console.log(res.body)
+        dispatch(uploadImageSuccess(res.body));
+      }
+    });
+
+    // const req = request
+    //   .post(eventsUrl + '/' + event.id)
+    //   .field('title', event.title)
+    //   .field('description', event.description)
+    // event.images.forEach((image)=> {
+    //   req.field('image', image.key);
+    // });
+    // event.files.forEach((file)=> {
+    //   req.attach('file', file);
+    // });
+
+    // return req.end((err, res) => {
+    //   if (err) {
+    //     dispatch(uploadImageFailure(err, event));
+    //     console.log(err)
+    //   } else {
+    //     console.log(res)
+    //     dispatch(uploadImageSuccess(res.body));
+    //   }
+    // });
+
+    // return request
+    //   .post(imagesUrl)
+    //   .attach('images', images.images)
+    //   .end((err, res) => {
+    //     if (err) {
+    //       dispatch(addEventFailure(err, images));
+    //       console.log(err)
+    //     } else {
+    //       console.log(res.body)
+    //       console.log(res.files)
+    //       dispatch(addEventSuccess(res.body));
+    //     }
+    //   });
+  };
+}
+
+export function uploadImageRequest(event) {
+  return {
+    type: types.UPLOAD_IMAGE_REQUEST,
+    event
+  };
+}
+
+export function uploadImageSuccess(event) {
+  return {
+    type: types.UPLOAD_IMAGE_SUCCESS,
+    event
+  };
+}
+
+export function uploadImageFailure(error, event) {
+  return {
+    type: types.UPLOAD_IMAGE_FAILURE,
+    event
+  };
+}
+
+
+// add event
+
+
 export function addEvent(event) {
   return dispatch => {
     dispatch(addEventRequest(event));
 
-    // const form = new FormData();
-
-    // // for (var i = 0; i < event.images.length; i++) {
-    //   form.append("images", event.images[0]);
-    // // }
-
-    // return request
-    //   .post(eventsUrl)
-    //   .attach("images", event.images[0])
-    //   .end((err, res) => {
-    //     if (err) {
-    //       dispatch(addEventFailure(err, event));
-    //     } else {
-    //       dispatch(addEventSuccess(res.body));
-    //     }
-    //   });
-
-
     return request
       .post(eventsUrl)
-      // .send(event)
+      .send(event)
       .set('Accept', 'application/json')
-      .field('text', event.text)
-      .field('name', event.name)
-      .field('value', event.value)
-      .field('userId', event.userId)
-      .attach('images', event.images)
       .end((err, res) => {
         if (err) {
           dispatch(addEventFailure(err, event));
-          console.log(err)
         } else {
-          console.log(res.body)
-          console.log(res.file)
           dispatch(addEventSuccess(res.body));
         }
       });
@@ -153,6 +229,7 @@ export function deleteEventFailure(error, event) {
 }
 
 export function editEvent(event) {
+  console.log(event)
   return dispatch => {
     dispatch(editEventRequest(event));
 
@@ -168,6 +245,27 @@ export function editEvent(event) {
         }
       });
   };
+
+  // return dispatch => {
+  //   dispatch(editEventRequest(event));
+
+  //   const req = request
+  //     .post(eventsUrl + '/' + event.id)
+  //     .field('title', event.title)
+  //     .field('description', event.description)
+  //   event.images.forEach((image)=> {
+  //     req.field('images', image);
+  //   });
+
+  //   return req.end((err, res) => {
+  //     if (err) {
+  //       dispatch(editEventFailure(err, event));
+  //       console.log(err)
+  //     } else {
+  //       dispatch(editEventSuccess(res.body));
+  //     }
+  //   });
+  // };
 }
 
 export function editEventRequest(event) {

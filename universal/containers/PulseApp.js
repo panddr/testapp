@@ -15,9 +15,13 @@ class PulseApp extends Component {
     addEvent: React.PropTypes.func.isRequired,
     editEvent: React.PropTypes.func.isRequired,
     deleteEvent: React.PropTypes.func.isRequired,
+    uploadImage: React.PropTypes.func.isRequired,
+    submitLogin: React.PropTypes.func.isRequired,
     userId: React.PropTypes.string,
     events: React.PropTypes.array,
+    uploadedImages: React.PropTypes.array,
     isWorking: React.PropTypes.bool,
+    isLoggedIn: React.PropTypes.bool,
     error: React.PropTypes.any,
   };
 
@@ -28,14 +32,13 @@ class PulseApp extends Component {
     };
 
     return (
-      <div className="Pulse-Container">
+      <div className="portfolio-container">
         <Header/>
-        <section className='Pulse-addEventForm'>
-          <EventInput onSubmit={this.props.addEvent} userId={this.props.userId} textLabel='What happened?' nameLabel='Your name' valueLabel='Rating' />
-        </section>
         <AsyncBar isWorking={this.props.isWorking} error={this.props.error} />
         {this.props.myEvents}
         {this.props.otherEvents}
+        {this.props.login}
+        {this.props.project}
       </div>
     );
   }
@@ -48,7 +51,9 @@ export default connect(
   state => ({
     events: state.pulseApp.events,
     userId: state.pulseApp.userId,
+    isLoggedIn: state.pulseApp.isLoggedIn,
     isWorking: state.pulseApp.isWorking,
+    uploadedImages: state.pulseApp.uploadedImages,
     error: state.pulseApp.error
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)

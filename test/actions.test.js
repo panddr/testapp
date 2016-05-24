@@ -21,16 +21,16 @@ describe('Actions', () => {
   /**
    * Example of writing a test on a syncronous action creator
    */
-  describe('setUserId', () => {
-    it('should return action with type SET_USER_ID and userId equal to 200', () => {
-      let action = actions.setUserId(200);
-      expect(action.type).to.equal(types.SET_USER_ID);
+  describe('getLogin', () => {
+    it('should return action with type GET_LOGIN and userId equal to 200', () => {
+      let action = actions.getLogin(200);
+      expect(action.type).to.equal(types.GET_LOGIN);
       expect(action.userId).to.equal(200);
     });
 
-    it('should return action with type SET_USER_ID and userId equal to 6700102', () => {
-      let action = actions.setUserId(6700102);
-      expect(action.type).to.equal(types.SET_USER_ID);
+    it('should return action with type GET_LOGIN and userId equal to 6700102', () => {
+      let action = actions.getLogin(6700102);
+      expect(action.type).to.equal(types.GET_LOGIN);
       expect(action.userId).to.equal(6700102);
     });
   });
@@ -57,7 +57,7 @@ describe('Actions', () => {
         { type: 'LOAD_EVENTS_REQUEST' },
         { type: 'LOAD_EVENTS_SUCCESS', events: [ { name: 'Awesome', value: 54 } ] }
       ];
-      
+
       let initialState = {pulseApp: { events: [], userId: 'baseUser'} };
       let store = mockStore(initialState, expectedActions, done);
 
@@ -80,7 +80,7 @@ describe('Actions', () => {
         { type: 'LOAD_EVENTS_REQUEST' },
         { type: 'LOAD_EVENTS_FAILURE', error: error }
       ];
-      
+
       let initialState = {pulseApp: { events: [], userId: 'baseUser'} };
       let store = mockStore(initialState, expectedActions, done);
 
