@@ -3,16 +3,9 @@ import multer from 'multer';
 import s3 from 'multer-s3';
 import path from 'path';
 // import sizeOf from 'image-size';
+require('dotenv').config();
 import size from 's3-image-size';
 var AWS = require('aws-sdk');
-var s3size = new AWS.S3({
-  region: 'eu-west-1',
-  secretAccessKey: '9N620NwIxOu53dn8Vtjpw3TlmVVPdb1R6ahEJbeD',
-  accessKeyId: 'AKIAJ4KEEK4LIY2HFMXQ'
-})
-
-const secretAccessKey = '9N620NwIxOu53dn8Vtjpw3TlmVVPdb1R6ahEJbeD';
-const accessKeyId = 'AKIAJ4KEEK4LIY2HFMXQ';
 
 export function getEvents(req, res) {
   service.getEvents()
@@ -26,9 +19,9 @@ export function getEvents(req, res) {
 export function uploadImage(req, res) {
   const options = s3({
     dirname: 'uploads/images',
-    bucket: 'imagesuploads',
-    secretAccessKey: '9N620NwIxOu53dn8Vtjpw3TlmVVPdb1R6ahEJbeD',
-    accessKeyId: 'AKIAJ4KEEK4LIY2HFMXQ',
+    bucket: 'projectsuploads',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: 'eu-west-1',
     filename: (req, file, cb) => {
       cb(null, (Math.random().toString(36)+'00000000000000000').slice(2, 10) + Date.now() + path.extname(file.originalname));

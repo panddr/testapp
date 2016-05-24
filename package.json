@@ -27,6 +27,7 @@
     "classnames": "2.2.3",
     "config": "1.19.0",
     "copy-webpack-plugin": "^2.1.1",
+    "dotenv": "^2.0.0",
     "ejs": "2.3.4",
     "express": "4.13.3",
     "file-loader": "^0.8.5",
