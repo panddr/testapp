@@ -3,6 +3,10 @@ import moment from 'moment';
 import EventInput from './EventInput';
 import { Link } from 'react-router';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as PulseActions from '../actions/PulseActions';
+
 export default class EventItem extends Component {
   static propTypes = {
     id: PropTypes.any.isRequired,
@@ -11,7 +15,8 @@ export default class EventItem extends Component {
     editEvent: PropTypes.func,
     deleteEvent: PropTypes.func,
     uploadImage: PropTypes.func,
-    uploadedImages: PropTypes.array
+    addImagesToStore: PropTypes.func,
+    images: React.PropTypes.array
   };
 
   constructor(props, context){
@@ -22,8 +27,12 @@ export default class EventItem extends Component {
   }
 
   handleClick() {
+    const { event } = this.props;
+
     if (this.props.editable) {
       this.setState({ editing: true });
+
+      this.props.addImagesToStore(event.images);
     }
   }
 
@@ -46,21 +55,17 @@ export default class EventItem extends Component {
 
     const link = '/project/' + event.slug;
 
-    let images = this.props.uploadedImages.concat(event.images);
-
     if (this.state.editing) {
       element = (
         <EventInput title={event.title}
                     description={event.description}
-                    images={images}
-                    uploadedImages={this.props.uploadedImages}
                     editing={this.state.editing}
                     onSubmit={ (event) => this.handleSave(Object.assign({}, event, { id: id })) }
                     onImageSubmit={ this.props.uploadImage } />
       );
     } else {
       let del = (this.props.editable) ?
-        <button className='destroy pure-button' onClick={ () => deleteEvent(event) } /> :
+        <button className='destroy pure-button' onClick={ () => deleteEvent(event) }>Удалить</button> :
         null;
       element = (
         <div className='portfolio-project-item'>
@@ -83,3 +88,14 @@ export default class EventItem extends Component {
     );
   }
 }
+
+
+/**
+ * Expose "Smart" Component that is connect-ed to Redux
+ */
+export default connect(
+  state => ({
+    images: state.pulseApp.images
+  }),
+  dispatch => bindActionCreators(PulseActions, dispatch)
+)(EventItem);

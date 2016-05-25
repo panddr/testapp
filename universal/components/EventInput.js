@@ -1,23 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as PulseActions from '../actions/PulseActions';
+
 export default class EventInput extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onImageSubmit: PropTypes.func.isRequired,
     titleLabel: PropTypes.string,
     descriptionLabel: PropTypes.string,
-    editing: PropTypes.bool
+    addImagesToStore: PropTypes.func,
+    editing: PropTypes.bool,
+    images: React.PropTypes.array
   };
+
+  componentDidMount() {
+    this.placeholder = document.createElement("li");
+    this.placeholder.className = "placeholder";
+  }
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       errors: [],
       title: this.props.title || '',
-      description: this.props.description || '',
-      images: this.props.images || [],
-      uploadedImages: this.props.uploadedImages || []
+      description: this.props.description || ''
     };
   }
 
@@ -32,7 +41,7 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({title: this.state.title, description: this.state.description, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.state.images});
+      this.props.onSubmit({title: this.state.title, description: this.state.description, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
       this.setState({title: ''});
     }
   }
@@ -47,23 +56,76 @@ export default class EventInput extends Component {
 
   handleCaptionChange(index, image, e) {
     image.caption = e.target.value;
-    const images = this.state.images.slice();
+    const images = this.props.images.slice();
     images.splice(index,1,image);
-    this.setState({ images: images });
+
+    this.props.addImagesToStore(images);
+  }
+
+  handleImageDelete(index, image, e) {
+    const images = this.props.images.slice();
+    images.splice(index,1);
+    this.props.removeImagesFromStore(images);
   }
 
   onDrop(files) {
     this.props.onImageSubmit({files: files});
+  }
 
-    setTimeout(() => {
-      this.setState({
-        images: this.props.images
-      });
-    }, 3000)
+  handleDragStart(e) {
+    console.log('drag start')
+    this.dragged = e.currentTarget;
+    e.dataTransfer.effectAllowed = 'move';
+
+    // Firefox requires calling dataTransfer.setData
+    // for the drag to properly work
+    e.dataTransfer.setData("text/html", e.currentTarget);
+  }
+
+  handleDragEnd(e) {
+    console.log('drag end')
+
+    this.dragged.style.display = "block";
+    this.dragged.parentNode.removeChild(this.placeholder);
+
+    // Update state
+    const images = this.props.images.slice();
+    console.log('before', images)
+    const from = Number(this.dragged.dataset.id);
+    let to = Number(this.over.dataset.id);
+    if (from < to) to--;
+    if (this.nodePlacement == "after") to++;
+    images.splice(to, 0, images.splice(from, 1)[0]);
+    console.log('after', images)
+    console.log('from', from)
+    console.log('to', to)
+
+    this.props.addImagesToStore(images);
+  }
+
+  handleDragOver(e) {
+    console.log('drag over')
+    e.preventDefault();
+
+    this.dragged.style.display = "none";
+    if (e.target.className == "placeholder") return;
+    if (e.target.nodeName !== "LI") return;
+    this.over = e.target;
+
+    var relY = e.clientY - this.over.offsetTop;
+    var height = this.over.offsetHeight / 2;
+    var parent = e.target.parentNode;
+
+    if (relY > height) {
+      this.nodePlacement = "after";
+      parent.insertBefore(this.placeholder, e.target.nextElementSibling);
+    } else if (relY < height) {
+      this.nodePlacement = "before"
+      parent.insertBefore(this.placeholder, e.target);
+    }
   }
 
   render() {
-    console.log('images',this.state.images)
     let self = this;
     let saveText = (this.props.editing) ? 'Сохранить' : 'Добавить';
 
@@ -83,19 +145,22 @@ export default class EventInput extends Component {
               </Dropzone>
               : null}
             {this.props.images.length > 0 ?
-              <div>{this.props.images.map((image, index) => {
-                const url = 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + image.key;
-                const key = image.key
-                const dimensions = image.dimensions
+              <ul onDragOver = { this.handleDragOver.bind(this) }>{this.props.images.map((image, index) => {
+                const url = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
 
                 return (
-                  <div key={index}>
-                    <img src={url} className={dimensions} />
+                  <li
+                    onDragStart = { this.handleDragStart.bind(this) }
+                    onDragEnd = { this.handleDragEnd.bind(this) }
+                    data-id = {index}
+                    key = {index} >
+                    <img src={url} />
                     <input value={image.caption} onChange={ this.handleCaptionChange.bind(this, index, image) } />
-                  </div>
+                    <button onClick={::this.handleImageDelete.bind(this, index, image)}>Удалить</button>
+                  </li>
                 )
               })}
-              </div>
+              </ul>
               : null}
             <button type='submit' className='button' onClick={::this.handleSubmit}>{saveText}</button>
           </fieldset>
@@ -104,3 +169,13 @@ export default class EventInput extends Component {
     );
   }
 }
+
+/**
+ * Expose "Smart" Component that is connect-ed to Redux
+ */
+export default connect(
+  state => ({
+    images: state.pulseApp.images
+  }),
+  dispatch => bindActionCreators(PulseActions, dispatch)
+)(EventInput);

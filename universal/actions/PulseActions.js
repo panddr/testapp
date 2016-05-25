@@ -65,8 +65,21 @@ export function loadEventsFailure(error) {
 
 // upload images
 
+export function addImagesToStore(event) {
+  return {
+    type: types.ADD_IMAGES_TO_STORE,
+    event
+  };
+}
+
+export function removeImagesFromStore(event) {
+  return {
+    type: types.REMOVE_IMAGES_FROM_STORE,
+    event
+  };
+}
+
 export function uploadImage(event) {
-  console.log(event)
   return dispatch => {
     dispatch(uploadImageRequest(event));
 
@@ -81,46 +94,9 @@ export function uploadImage(event) {
         dispatch(uploadImageFailure(err, event));
         console.log(err)
       } else {
-        console.log(res)
-        console.log(res.body)
         dispatch(uploadImageSuccess(res.body));
       }
     });
-
-    // const req = request
-    //   .post(eventsUrl + '/' + event.id)
-    //   .field('title', event.title)
-    //   .field('description', event.description)
-    // event.images.forEach((image)=> {
-    //   req.field('image', image.key);
-    // });
-    // event.files.forEach((file)=> {
-    //   req.attach('file', file);
-    // });
-
-    // return req.end((err, res) => {
-    //   if (err) {
-    //     dispatch(uploadImageFailure(err, event));
-    //     console.log(err)
-    //   } else {
-    //     console.log(res)
-    //     dispatch(uploadImageSuccess(res.body));
-    //   }
-    // });
-
-    // return request
-    //   .post(imagesUrl)
-    //   .attach('images', images.images)
-    //   .end((err, res) => {
-    //     if (err) {
-    //       dispatch(addEventFailure(err, images));
-    //       console.log(err)
-    //     } else {
-    //       console.log(res.body)
-    //       console.log(res.files)
-    //       dispatch(addEventSuccess(res.body));
-    //     }
-    //   });
   };
 }
 
@@ -229,7 +205,6 @@ export function deleteEventFailure(error, event) {
 }
 
 export function editEvent(event) {
-  console.log(event)
   return dispatch => {
     dispatch(editEventRequest(event));
 
@@ -245,27 +220,6 @@ export function editEvent(event) {
         }
       });
   };
-
-  // return dispatch => {
-  //   dispatch(editEventRequest(event));
-
-  //   const req = request
-  //     .post(eventsUrl + '/' + event.id)
-  //     .field('title', event.title)
-  //     .field('description', event.description)
-  //   event.images.forEach((image)=> {
-  //     req.field('images', image);
-  //   });
-
-  //   return req.end((err, res) => {
-  //     if (err) {
-  //       dispatch(editEventFailure(err, event));
-  //       console.log(err)
-  //     } else {
-  //       dispatch(editEventSuccess(res.body));
-  //     }
-  //   });
-  // };
 }
 
 export function editEventRequest(event) {

@@ -4,7 +4,7 @@ import {
   UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE,
   DELETE_EVENT_REQUEST, DELETE_EVENT_SUCCESS, DELETE_EVENT_FAILURE,
   EDIT_EVENT_REQUEST, EDIT_EVENT_SUCCESS, EDIT_EVENT_FAILURE,
-  GET_LOGIN, SUBMIT_LOGIN
+  GET_LOGIN, SUBMIT_LOGIN, ADD_IMAGES_TO_STORE, REMOVE_IMAGES_FROM_STORE
 } from '../constants/ActionTypes';
 import {UPDATE_LOCATION} from 'redux-simple-router';
 
@@ -13,7 +13,7 @@ const initialState = {
   userId: null,
   isLoggedIn: false,
   error: null,
-  uploadedImages: [],
+  images: [],
   events: []
 };
 
@@ -26,7 +26,7 @@ export default function pulses(state = initialState, action) {
 
     case UPDATE_LOCATION:
       return Object.assign({}, state, {
-        uploadedImages: []
+        images: []
       });
 
     case SUBMIT_LOGIN:
@@ -51,6 +51,16 @@ export default function pulses(state = initialState, action) {
         events: events
       });
 
+    case ADD_IMAGES_TO_STORE:
+      return Object.assign({}, state, {
+        images: action.event
+      });
+
+    case REMOVE_IMAGES_FROM_STORE:
+      return Object.assign({}, state, {
+        images: action.event
+      });
+
     case UPLOAD_IMAGE_REQUEST:
       return Object.assign({}, state, {
         isWorking: true,
@@ -58,13 +68,11 @@ export default function pulses(state = initialState, action) {
       });
 
     case UPLOAD_IMAGE_SUCCESS:
-      let uploadedImages = state.uploadedImages;
-      uploadedImages = state.uploadedImages.concat(action.event);
-      // uploadedImages = [action.event, ...state.uploadedImages];
+      let images = action.event.concat(state.images);
       return Object.assign({}, state, {
         isWorking: false,
         error: null,
-        uploadedImages: uploadedImages
+        images: images
       });
 
     case DELETE_EVENT_REQUEST:

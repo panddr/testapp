@@ -16,7 +16,7 @@ export default class ProjectPage extends Component {
         <p>{project[0].description}</p>
         {project[0].images.length > 0 ?
           <div>{project[0].images.map((image, index) => {
-            const imageUrl = 'https://s3-eu-west-1.amazonaws.com/imagesuploads/uploads/images/' + image.key;
+            const imageUrl = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
             const key = image.key
             return (
               <div key={index}>

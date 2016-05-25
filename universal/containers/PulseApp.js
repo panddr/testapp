@@ -19,10 +19,9 @@ class PulseApp extends Component {
     submitLogin: React.PropTypes.func.isRequired,
     userId: React.PropTypes.string,
     events: React.PropTypes.array,
-    uploadedImages: React.PropTypes.array,
     isWorking: React.PropTypes.bool,
     isLoggedIn: React.PropTypes.bool,
-    error: React.PropTypes.any,
+    error: React.PropTypes.any
   };
 
   render() {
@@ -53,7 +52,6 @@ export default connect(
     userId: state.pulseApp.userId,
     isLoggedIn: state.pulseApp.isLoggedIn,
     isWorking: state.pulseApp.isWorking,
-    uploadedImages: state.pulseApp.uploadedImages,
     error: state.pulseApp.error
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)

@@ -9,8 +9,7 @@ class Login extends Component {
   static propTypes = {
     addEvent: React.PropTypes.func.isRequired,
     submitLogin: React.PropTypes.func.isRequired,
-    isLoggedIn: React.PropTypes.bool,
-    uploadedImages: React.PropTypes.Array
+    isLoggedIn: React.PropTypes.bool
   }
 
   render() {
@@ -26,8 +25,7 @@ class Login extends Component {
  */
 export default connect(
   state => ({
-    isLoggedIn: state.pulseApp.isLoggedIn,
-    uploadedImages: state.pulseApp.uploadedImages
+    isLoggedIn: state.pulseApp.isLoggedIn
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)
 )(Login);

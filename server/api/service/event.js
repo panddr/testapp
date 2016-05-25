@@ -88,11 +88,10 @@ export function addEvent(event) {
   // });
 }
 
-export function editEvent(id, event, images) {
+export function editEvent(id, event) {
   event.updated = new Date();
   event.description = xss(event.description);
   event.slug = slug(event.title);
-  event.images = images;
   return r
     .table('pulses')
     .get(id).update(event).run()

@@ -40,7 +40,6 @@ app.post('/api/0/events/:id', api.editEvent);
 app.delete('/api/0/events/:id', api.deleteEvent);
 // app.get('/project/:slug', api.getEvent);
 app.post('/api/0/images', api.uploadImage);
-app.delete('/api/0/images', api.deleteImage);
 
 app.get('/favicon.ico', (req, res) => res.sendFile(path.join(__dirname, 'images', 'favicon.ico')));
 
