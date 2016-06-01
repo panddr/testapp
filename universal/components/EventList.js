@@ -15,34 +15,15 @@ export default class EventList extends Component {
     let list;
     let editable = true;
 
-    let cumulative = myEvents.reduce((x, event) =>  event.value + x, 0);
-    let average = (myEvents.length > 0) ? Math.round(cumulative/myEvents.length): 0;
-
-
-
-    if (myEvents.length > 0) {
-      list = myEvents.map((event, key) =>
-        <EventItem key={key} row={key} id={event.id} editable={editable} event={event} {...actions} />
-      );
-    } else {
-      list = <li>
-        <div className='Pulse-eventItem empty'>
-          <p>No events recorded!</p>
-        </div>
-      </li>;
-    }
+    list = myEvents.map((event, key) =>
+      <EventItem key={key} row={key} id={event.id} editable={editable} event={event} {...actions} />
+    );
 
     return (
-      <section className='Pulse-eventList'>
-        <div className='Pulse-eventList-summary'>
-          <span>Your Events</span>
-        </div>
-
-        <div className='Pulse-eventList-list'>
-          <ul>
-            {list}
-          </ul>
-        </div>
+      <section className='portfolio-project-list'>
+        <ul>
+          {list}
+        </ul>
       </section>
     );
   }

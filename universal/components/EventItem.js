@@ -59,6 +59,7 @@ export default class EventItem extends Component {
       element = (
         <EventInput title={event.title}
                     description={event.description}
+                    artist={event.artist}
                     editing={this.state.editing}
                     onSubmit={ (event) => this.handleSave(Object.assign({}, event, { id: id })) }
                     onImageSubmit={ this.props.uploadImage } />
@@ -68,23 +69,23 @@ export default class EventItem extends Component {
         <button className='destroy pure-button' onClick={ () => deleteEvent(event) }>Удалить</button> :
         null;
       element = (
-        <div className='portfolio-project-item'>
-          <Link to={link}>{event.title}</Link>
-          <p className='title' onClick={::this.handleClick}>
+        <div>
+          <Link to={link}>
+            {event.images.length > 0 ?
+              <div>
+                <img src={imageUrl} />
+              </div>
+              : null}
             {event.title}
-          </p>
-          {event.images.length > 0 ?
-            <div>
-              <img src={imageUrl} />
-            </div>
-            : null}
+          </Link>
+          <button onClick={::this.handleClick}>Редактировать</button>
           {del}
         </div>
       );
     }
 
     return (
-      <li>{element}</li>
+      <li className='portfolio-project-item'>{element}</li>
     );
   }
 }

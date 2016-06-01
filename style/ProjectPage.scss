@@ -1,0 +1,10 @@
+@import "mixins";
+
+.project-container {
+  padding: $grid;
+
+  > .project-info {
+    max-width: $size-medium;
+    margin: auto;
+  }
+}

@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Header from '../components/Header';
 import EventList from '../components/EventList';
-import EventTicker from '../components/EventTicker';
+import NasedkinList from '../components/NasedkinList';
 import AsyncBar from '../components/AsyncBar';
 import EventInput from '../components/EventInput';
 
@@ -32,10 +31,9 @@ class PulseApp extends Component {
 
     return (
       <div className="portfolio-container">
-        <Header/>
         <AsyncBar isWorking={this.props.isWorking} error={this.props.error} />
         {this.props.myEvents}
-        {this.props.otherEvents}
+        {this.props.nasedkin}
         {this.props.login}
         {this.props.project}
       </div>

@@ -9,7 +9,10 @@ var isDev = (process.env.NODE_ENV === 'development');
 var appEntry = './client/app';
 
 var defineEnvPlugin = new webpack.DefinePlugin({
-  __DEV__: isDev
+  __DEV__: isDev,
+  "process.env": {
+    BROWSER: JSON.stringify(true)
+  }
 });
 
 var entryScripts = [ appEntry ];

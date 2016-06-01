@@ -1,4 +1,11 @@
 import React, { PropTypes, Component } from 'react';
+import { IndexLink } from 'react-router';
+import marked from 'marked';
+
+if (process.env.BROWSER) {
+  require("../../style/ProjectPage.scss");
+}
+
 
 export default class ProjectPage extends Component {
   static propTypes = {
@@ -6,26 +13,58 @@ export default class ProjectPage extends Component {
     slug: PropTypes.object.isRequired
   }
 
+  rawMarkup() {
+    let { slug } = this.props.slug;
+    const project = this.props.events.filter(project => project.slug === slug );
+    const rawMarkup = marked(project[0].description.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  }
+
   render() {
     let { slug } = this.props.slug;
     const project = this.props.events.filter(project => project.slug === slug );
+    const artist = project[0].artist;
+    let element;
+
+    if (artist == 'nasedkin') {
+      element = (
+        <header className='portfolio-header'>
+          <div className='portfolio-links'>
+            <h1 className="active"><IndexLink to='/'>Владимир Наседкин</IndexLink></h1>
+            <h1><IndexLink to='/'>Татьяна Бададина</IndexLink></h1>
+          </div>
+        </header>
+      );
+    } else {
+      element = (
+        <header className='portfolio-header'>
+          <div className='portfolio-links'>
+            <h1><IndexLink to='/'>Владимир Наседкин</IndexLink></h1>
+            <h1 className="active"><IndexLink to='/'>Татьяна Бададина</IndexLink></h1>
+          </div>
+        </header>
+      );
+    }
 
     return (
-      <div className="portfolio-login">
-        <h1>{project[0].title}</h1>
-        <p>{project[0].description}</p>
+      <div className="project-container">
+        { element }
+        <div className="project-info">
+          <h1>{project[0].title}</h1>
+          <div className="description" dangerouslySetInnerHTML={this.rawMarkup()} />
+        </div>
         {project[0].images.length > 0 ?
-          <div>{project[0].images.map((image, index) => {
+          <ul>{project[0].images.map((image, index) => {
             const imageUrl = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
             const key = image.key
             return (
-              <div key={index}>
+              <li key={index} className={image.size}>
                 <img src={imageUrl} />
                 {image.caption}
-              </div>
+              </li>
             )
           })}
-          </div>
+          </ul>
           : null}
       </div>
     );

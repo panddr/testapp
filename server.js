@@ -9,6 +9,8 @@ import * as api from './server/api/http';
 import * as eventService from './server/api/service/event';
 import * as uni from './server/app.js';
 
+delete process.env.BROWSER;
+
 const app = express();
 const httpServer = http.createServer(app);
 const port = config.get('express.port') || 3000;

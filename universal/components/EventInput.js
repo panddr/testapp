@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as PulseActions from '../actions/PulseActions';
 
+import Switcher from "./Switcher";
+
 export default class EventInput extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -26,7 +28,8 @@ export default class EventInput extends Component {
     this.state = {
       errors: [],
       title: this.props.title || '',
-      description: this.props.description || ''
+      description: this.props.description || '',
+      artist: this.props.artist || 'nasedkin'
     };
   }
 
@@ -41,7 +44,7 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({title: this.state.title, description: this.state.description, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
+      this.props.onSubmit({title: this.state.title, description: this.state.description, artist: this.state.artist, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
       this.setState({title: ''});
     }
   }
@@ -54,8 +57,20 @@ export default class EventInput extends Component {
     this.setState({ description: e.target.value });
   }
 
+  handleArtistChange(e) {
+    this.setState({ artist: e });
+  }
+
   handleCaptionChange(index, image, e) {
     image.caption = e.target.value;
+    const images = this.props.images.slice();
+    images.splice(index,1,image);
+
+    this.props.addImagesToStore(images);
+  }
+
+  handleSizeChange(index, image, e) {
+    image.size = e;
     const images = this.props.images.slice();
     images.splice(index,1,image);
 
@@ -73,7 +88,6 @@ export default class EventInput extends Component {
   }
 
   handleDragStart(e) {
-    console.log('drag start')
     this.dragged = e.currentTarget;
     e.dataTransfer.effectAllowed = 'move';
 
@@ -83,28 +97,21 @@ export default class EventInput extends Component {
   }
 
   handleDragEnd(e) {
-    console.log('drag end')
-
     this.dragged.style.display = "block";
     this.dragged.parentNode.removeChild(this.placeholder);
 
     // Update state
     const images = this.props.images.slice();
-    console.log('before', images)
     const from = Number(this.dragged.dataset.id);
     let to = Number(this.over.dataset.id);
     if (from < to) to--;
     if (this.nodePlacement == "after") to++;
     images.splice(to, 0, images.splice(from, 1)[0]);
-    console.log('after', images)
-    console.log('from', from)
-    console.log('to', to)
 
     this.props.addImagesToStore(images);
   }
 
   handleDragOver(e) {
-    console.log('drag over')
     e.preventDefault();
 
     this.dragged.style.display = "none";
@@ -129,12 +136,18 @@ export default class EventInput extends Component {
     let self = this;
     let saveText = (this.props.editing) ? 'Сохранить' : 'Добавить';
 
+    console.log(this.state.artist)
+
     return (
       <div>
         <form className='form' encType="multipart/form-data" method="post" action="/api/0/events">
           <fieldset>
             <input type='text' placeholder={this.props.titleLabel} value={this.state.title} onChange={::this.handleTitleChange} />
             <textarea placeholder={this.props.descriptionLabel} value={this.state.description} onChange={::this.handleDescriptionChange} />
+            <Switcher
+              options  = { optionsArtist }
+              value    = { this.state.artist }
+              onChange = { this.handleArtistChange.bind(this) } />
             {this.props.editing ?
               <Dropzone
                 onDrop={::this.onDrop}
@@ -155,7 +168,13 @@ export default class EventInput extends Component {
                     data-id = {index}
                     key = {index} >
                     <img src={url} />
-                    <input value={image.caption} onChange={ this.handleCaptionChange.bind(this, index, image) } />
+                    <input
+                      value={image.caption}
+                      onChange={ this.handleCaptionChange.bind(this, index, image) } />
+                    <Switcher
+                      options  = { optionsImageSize }
+                      value    = { image.size }
+                      onChange = { this.handleSizeChange.bind(this, index, image) } />
                     <button onClick={::this.handleImageDelete.bind(this, index, image)}>Удалить</button>
                   </li>
                 )
@@ -179,3 +198,29 @@ export default connect(
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)
 )(EventInput);
+
+const optionsImageSize = [
+  {
+    value: "small",
+    labelText: "S",
+  },
+  {
+    value: "medium",
+    labelText: "M"
+  },
+  {
+    value: "large",
+    labelText: "L"
+  }
+]
+
+const optionsArtist = [
+  {
+    value: "nasedkin",
+    labelText: "Владимир Наседкин",
+  },
+  {
+    value: "badanina",
+    labelText: "Татьяна Баданина"
+  }
+]
