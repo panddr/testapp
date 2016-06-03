@@ -2,19 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import LoginPage from '../components/LoginPage';
+import HomePage from '../components/HomePage';
 import * as PulseActions from '../actions/PulseActions';
 
-class Login extends Component {
+class Home extends Component {
   static propTypes = {
-    addEvent: React.PropTypes.func.isRequired,
-    submitLogin: React.PropTypes.func.isRequired,
     isLoggedIn: React.PropTypes.bool
   }
 
   render() {
     return (
-      <LoginPage submitLogin={this.props.submitLogin} isLoggedIn={this.props.isLoggedIn} addEvent={this.props.addEvent} />
+      <HomePage />
     );
   }
 }
@@ -25,6 +23,5 @@ class Login extends Component {
 export default connect(
   state => ({
     isLoggedIn: state.pulseApp.isLoggedIn
-  }),
-  dispatch => bindActionCreators(PulseActions, dispatch)
-)(Login);
+  })
+)(Home);

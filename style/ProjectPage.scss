@@ -4,7 +4,10 @@
   padding: $grid;
 
   > .project-info {
-    max-width: $size-medium;
-    margin: auto;
+    margin-bottom: $grid*2;
+
+    .description {
+      font-size: 2em;
+    }
   }
 }

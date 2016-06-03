@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { IndexLink } from 'react-router';
+import { Link } from 'react-router';
 import marked from 'marked';
 
 if (process.env.BROWSER) {
@@ -30,8 +30,8 @@ export default class ProjectPage extends Component {
       element = (
         <header className='portfolio-header'>
           <div className='portfolio-links'>
-            <h1 className="active"><IndexLink to='/'>Владимир Наседкин</IndexLink></h1>
-            <h1><IndexLink to='/'>Татьяна Бададина</IndexLink></h1>
+            <h1 className="active"><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
+            <h1><Link to='/badanina' activeClassName='active'>Татьяна Бададина</Link></h1>
           </div>
         </header>
       );
@@ -39,8 +39,8 @@ export default class ProjectPage extends Component {
       element = (
         <header className='portfolio-header'>
           <div className='portfolio-links'>
-            <h1><IndexLink to='/'>Владимир Наседкин</IndexLink></h1>
-            <h1 className="active"><IndexLink to='/'>Татьяна Бададина</IndexLink></h1>
+            <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
+            <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Бададина</Link></h1>
           </div>
         </header>
       );

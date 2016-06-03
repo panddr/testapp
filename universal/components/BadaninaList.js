@@ -1,8 +1,8 @@
 import React, {PropTypes, Component} from 'react';
-import { Link } from 'react-router';
 import EventItem from './EventItem';
+import { Link } from 'react-router';
 
-export default class NasedkinList extends Component {
+export default class BadaninaList extends Component {
   static propTypes = {
     events: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
@@ -11,7 +11,7 @@ export default class NasedkinList extends Component {
 
   render() {
     const { events, userId, actions } = this.props;
-    const nasedkin = events.filter(row => row.artist == 'nasedkin' );
+    const badanina = events.filter(row => row.artist == 'badanina' );
     let editable = true;
 
     return (
@@ -23,9 +23,8 @@ export default class NasedkinList extends Component {
           </div>
         </header>
         <div>
-          <p className="bio">Родился в городе Ивдель Свердловской области. В 1976 закончил художественно-графический факультет Нижнетагильского Государственного Педагогического Института. Учился у Перевалова Л. И. и Черепанова К. П. Работает совместно с женой, художницей Татьяной Баданиной. Дочь Анна Наседкина (1978 г. р.) — иконописец.</p>
-          <ul>
-            {nasedkin.slice(0,this.props.length).map((event, key) =>
+          <p className="bio">Татьяна Баданина родилась в 1955 году в г. Нижний Тагил, Урал. Училась на художественно-графическом факультете Нижнетагильского Государственного Педагогического Института (1973—1978).Учителя: Антоний В.П., Перевалов Л.И., Багаев И.И. Участник выставок с 1978 года.</p>          <ul>
+            {badanina.slice(0,this.props.length).map((event, key) =>
               <EventItem key={key} row={key} id={event.id} event={event} editable={editable} uploadImage={this.props.uploadImage} {...actions} />
             )}
           </ul>

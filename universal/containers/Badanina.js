@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import EventList from '../components/EventList';
+import BadaninaList from '../components/BadaninaList';
 import * as PulseActions from '../actions/PulseActions';
 
-class MyEvents extends Component {
+class Badanina extends Component {
   static propTypes = {
     editEvent: React.PropTypes.func.isRequired,
     deleteEvent: React.PropTypes.func.isRequired,
@@ -21,7 +21,7 @@ class MyEvents extends Component {
     };
 
     return (
-      <EventList events={this.props.events} userId={this.props.userId} actions={actions} uploadImage={this.props.uploadImage} />
+      <BadaninaList events={this.props.events} userId={this.props.userId} actions={actions} uploadImage={this.props.uploadImage} />
     );
   }
 }
@@ -35,4 +35,4 @@ export default connect(
     userId: state.pulseApp.userId
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)
-)(MyEvents);
+)(Badanina);
