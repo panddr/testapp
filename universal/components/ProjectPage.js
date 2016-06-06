@@ -31,7 +31,7 @@ export default class ProjectPage extends Component {
         <header className='portfolio-header'>
           <div className='portfolio-links'>
             <h1 className="active"><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
-            <h1><Link to='/badanina' activeClassName='active'>Татьяна Бададина</Link></h1>
+            <h1><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
           </div>
         </header>
       );
@@ -40,7 +40,7 @@ export default class ProjectPage extends Component {
         <header className='portfolio-header'>
           <div className='portfolio-links'>
             <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
-            <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Бададина</Link></h1>
+            <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
           </div>
         </header>
       );

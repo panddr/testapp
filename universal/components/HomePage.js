@@ -12,7 +12,7 @@ export default class HomePage extends Component {
         <div className='portfolio-homepage'>
           <div className='portfolio-links'>
             <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
-            <h1><Link to='/badanina' activeClassName='active'>Татьяна Бададина</Link></h1>
+            <h1><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
           </div>
         </div>
       </div>
