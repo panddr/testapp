@@ -136,8 +136,6 @@ export default class EventInput extends Component {
     let self = this;
     let saveText = (this.props.editing) ? 'Сохранить' : 'Добавить';
 
-    console.log(this.state.artist)
-
     return (
       <div>
         <form className='form' encType="multipart/form-data" method="post" action="/api/0/events">

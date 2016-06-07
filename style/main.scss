@@ -9,7 +9,7 @@ body {
   margin: 0; padding: 0;
 
   h1 {
-    @include header-font-size(1em,1.1em,1.2em,2em);
+    @include header-font-size(1em,1em,1.4em,2em);
   }
 
   h2 {
@@ -63,11 +63,6 @@ input:checked {
   background: black;
 }
 
-.portfolio-container {
-  max-width: 1500px;
-  margin: auto;
-}
-
 .project-container {
   > ul {
     display: flex;
@@ -76,16 +71,41 @@ input:checked {
     justify-content: center;
 
     > li {
-      width: 33.3%;
+      width: 100%;
       margin-bottom: $grid*2;
-      padding: 3%;
+
+      @include respond-to(small) {
+        width: 50%;
+        padding: 2%;
+      }
+
+      @include respond-to(medium) {
+        width: 33.3%;
+        padding: 3%;
+      }
+
+      @include respond-to(xlarge) {
+        padding: 5%;
+      }
 
       &.small {
-        width: 33.3%;
+        @include respond-to(small) {
+          width: 50%;
+        }
+
+        @include respond-to(medium) {
+          width: 33.3%;
+        }
       }
 
       &.medium {
-        width: 50%;
+        @include respond-to(small) {
+          width: 70%;
+        }
+
+        @include respond-to(medium) {
+          width: 50%;
+        }
       }
 
       &.large {
@@ -118,15 +138,30 @@ input:checked {
 p {
   margin-top: 0;
   margin-bottom: 0;
-  text-indent: $grid*2;
+  text-indent: $grid;
+
+  @include respond-to(medium) {
+    text-indent: $grid*2;
+  }
 }
 
 .portfolio-project-list {
   padding: $grid;
 
   .bio {
-    font-size: 2em;
     margin-bottom: $grid*2;
+
+    @include respond-to(medium) {
+      font-size: 1.4em;
+    }
+
+    @include respond-to(large) {
+      font-size: 2em;
+    }
+
+    @include respond-to(xlarge) {
+      font-size: 2.4em;
+    }
   }
 
   > div {
@@ -137,8 +172,22 @@ p {
       justify-content: center;
 
       > li {
-        width: 25%;
-        padding: 3%;
+        width: 100%;
+        margin-bottom: $grid*2;
+
+        @include respond-to(small) {
+          width: 50%;
+          padding: 3%;
+        }
+
+        @include respond-to(large) {
+          width: 33.3%;
+          padding: 3%;
+        }
+
+        @include respond-to(xlarge) {
+          width: 25%;
+        }
 
         img {
           width: 100%;
@@ -157,18 +206,16 @@ p {
     display: flex;
 
     h1 {
-      margin-right: $grid;
       width: 50%;
+      padding-right: 15%;
 
-      &.active a {
-        // text-decoration: none;
-        background: $color-main;
-        color: white;
+      @include respond-to(small) {
+        padding-right: $grid;
       }
 
-      &:last-child {
-        border-left: 1px solid white;
-        padding-left: $grid;
+      &.active a {
+        background: $color-main;
+        color: white;
       }
     }
 

@@ -6,8 +6,20 @@
   > .project-info {
     margin-bottom: $grid*2;
 
-    .description {
+    @include respond-to(medium) {
+      font-size: 1.4em;
+    }
+
+    @include respond-to(large) {
       font-size: 2em;
+    }
+
+    @include respond-to(xlarge) {
+      font-size: 2.4em;
+    }
+
+    > h1 {
+      margin-bottom: 0;
     }
   }
 }
