@@ -15,7 +15,11 @@ var defineEnvPlugin = new webpack.DefinePlugin({
   }
 });
 
-var entryScripts = [ appEntry ];
+var entryScripts = [
+  'babel-polyfill',
+  appEntry
+];
+
 var output = {
   path: path.join(__dirname, [ '/', config.get('buildDirectory') ].join('')),
   filename: 'bundle.js'
@@ -53,6 +57,7 @@ if (isDev) {
   output.publicPath = 'http://localhost:3001/';
   plugins.push(new webpack.HotModuleReplacementPlugin());
   entryScripts = [
+    'babel-polyfill',
     'webpack-dev-server/client?http://localhost:3001',
     'webpack/hot/only-dev-server',
     appEntry

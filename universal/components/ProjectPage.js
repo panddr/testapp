@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import marked from 'marked';
+import EventItem from './EventItem';
 
 if (process.env.BROWSER) {
   require("../../style/ProjectPage.scss");
@@ -23,32 +24,31 @@ export default class ProjectPage extends Component {
   render() {
     let { slug } = this.props.slug;
     const project = this.props.events.filter(project => project.slug === slug );
+    const related = this.props.events;
     const artist = project[0].artist;
     let element;
 
     if (artist == 'nasedkin') {
       element = (
-        <header className='portfolio-header'>
-          <div className='portfolio-links'>
-            <h1 className="active"><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
-            <h1><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
-          </div>
-        </header>
+        <div className='portfolio-links'>
+          <h1 className="active"><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
+          <h1><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
+        </div>
       );
     } else {
       element = (
-        <header className='portfolio-header'>
-          <div className='portfolio-links'>
-            <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
-            <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
-          </div>
-        </header>
+        <div className='portfolio-links'>
+          <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
+          <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
+        </div>
       );
     }
 
     return (
       <div className="project-container">
-        { element }
+        <header className='portfolio-header'>
+          { element }
+        </header>
         <div className="project-info">
           <h1>{project[0].title}</h1>
           <div className="description" dangerouslySetInnerHTML={this.rawMarkup()} />
@@ -66,6 +66,13 @@ export default class ProjectPage extends Component {
           })}
           </ul>
           : null}
+        <section className="related">
+          <ul>
+            {related.slice(0,this.props.length).map((event, key) =>
+              <EventItem key={key} row={key} id={event.id} event={event} />
+            )}
+          </ul>
+        </section>
       </div>
     );
   }

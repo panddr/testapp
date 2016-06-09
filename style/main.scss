@@ -7,6 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
   margin: 0; padding: 0;
+  min-width: 320px;
 
   h1 {
     @include header-font-size(1em,1em,1.4em,2em);
@@ -32,6 +33,54 @@ body {
 a {
   text-decoration: none;
   color: $color-main;
+  transition: background .3s $base-transition-style, color .3s $base-transition-style;
+  border-bottom: 1px solid $color-main;
+
+  &:hover {
+    background: $color-main;
+    color: white;
+  }
+}
+
+input, textarea {
+  outline: none;
+  border-radius: 0;
+  background: white;
+  border: 0;
+  border: 1px solid $color-main;
+  resize: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  padding: $grid/5 $grid/4;
+  margin: 0;
+
+  &:focus::-webkit-input-placeholder {
+    color: $color-main;
+  }
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    background: white;
+  }
+}
+
+input[type=submit],
+.button,
+button {
+  background: white;
+  box-shadow: none;
+  transition: background .3s $base-transition-style, color .3s $base-transition-style;
+  padding: $grid/5 $grid/4;
+  cursor: pointer;
+  color: $color-main;
+  -webkit-appearance: none;
+  border: 1px solid $color-main;
+
+  &:hover {
+    background: $color-main;
+    color: white;
+    text-decoration: initial;
+  }
 }
 
 ul {
@@ -162,6 +211,10 @@ p {
     @include respond-to(xlarge) {
       font-size: 2.4em;
     }
+
+    > a {
+      border-bottom: 1px solid $color-main;
+    }
   }
 
   > div {
@@ -180,13 +233,17 @@ p {
           padding: 3%;
         }
 
-        @include respond-to(large) {
+        @include respond-to(medium) {
           width: 33.3%;
-          padding: 3%;
+          padding: 2%;
+        }
+
+        @include respond-to(large) {
+          width: 25%;
         }
 
         @include respond-to(xlarge) {
-          width: 25%;
+          width: 20%;
         }
 
         img {
@@ -199,8 +256,12 @@ p {
 }
 
 .portfolio-header {
-  margin-bottom: $grid;
+  margin-bottom: $grid*2;
   width: 100%;
+
+  @include respond-to(large) {
+    margin-bottom: $grid*4;
+  }
 
   > .portfolio-links {
     display: flex;
@@ -210,7 +271,18 @@ p {
       padding-right: 15%;
 
       @include respond-to(small) {
-        padding-right: $grid;
+        padding-right: 0;
+      }
+
+      &:last-child {
+        text-align: right;
+        padding-left: 15%;
+        padding-right: 0;
+
+        @include respond-to(small) {
+          padding-left: 0;
+          text-align: left;
+        }
       }
 
       &.active a {
@@ -220,8 +292,6 @@ p {
     }
 
     a {
-      border-bottom: 1px solid $color-main;
-
       &.active {
         background: $color-main;
         color: white;

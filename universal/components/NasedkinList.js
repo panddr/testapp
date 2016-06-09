@@ -23,7 +23,23 @@ export default class NasedkinList extends Component {
           </div>
         </header>
         <div>
-          <p className="bio">Родился в городе Ивдель Свердловской области. В 1976 закончил художественно-графический факультет Нижнетагильского Государственного Педагогического Института. Учился у Перевалова Л. И. и Черепанова К. П. Работает совместно с женой, художницей Татьяной Баданиной. Дочь Анна Наседкина (1978 г. р.) — иконописец.</p>
+          <p className="bio">
+            <span>Владимир Никитович Наседкин (род. 4 апреля 1954 года)&nbsp;&mdash; российский </span>
+            <a target="_blank" href="https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D1%81%D0%B5%D0%B4%D0%BA%D0%B8%D0%BD,_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9D%D0%B8%D0%BA%D0%B8%D1%82%D0%BE%D0%B2%D0%B8%D1%87">художник</a>
+            <span>, </span>
+            <a href="#">живописец</a>
+            <span>, </span>
+            <a href="#">график</a>
+            <span>, </span>
+            <a href="#">скульптор</a>
+            <span>, </span>
+            <a href="#">фотограф</a>
+            <span>, </span>
+            <a href="#">автор объектов</a>
+            <span> и&nbsp;</span>
+            <a href="#">инсталляций</a>
+            <span>.</span>
+          </p>
           <ul>
             {nasedkin.slice(0,this.props.length).map((event, key) =>
               <EventItem key={key} row={key} id={event.id} event={event} editable={editable} uploadImage={this.props.uploadImage} {...actions} />

@@ -23,7 +23,20 @@ export default class BadaninaList extends Component {
           </div>
         </header>
         <div>
-          <p className="bio">Татьяна Баданина родилась в 1955 году в г. Нижний Тагил, Урал. Училась на художественно-графическом факультете Нижнетагильского Государственного Педагогического Института (1973—1978).Учителя: Антоний В.П., Перевалов Л.И., Багаев И.И. Участник выставок с 1978 года.</p>          <ul>
+          <p className="bio">
+            <span>Татьяна Васильевна Баданина (род. 16 ноября 1955 года)&nbsp;&mdash; российский </span>
+              <a target="_blank" href="https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D1%81%D0%B5%D0%B4%D0%BA%D0%B8%D0%BD,_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9D%D0%B8%D0%BA%D0%B8%D1%82%D0%BE%D0%B2%D0%B8%D1%87">художник</a>
+              <span>, </span>
+              <a href="#">живописец</a>
+              <span>, </span>
+              <a href="#">график</a>
+              <span>, </span>
+              <a href="#">автор объектов</a>
+              <span> и&nbsp;</span>
+              <a href="#">инсталляций</a>
+              <span>.</span>
+          </p>
+          <ul>
             {badanina.slice(0,this.props.length).map((event, key) =>
               <EventItem key={key} row={key} id={event.id} event={event} editable={editable} uploadImage={this.props.uploadImage} {...actions} />
             )}
