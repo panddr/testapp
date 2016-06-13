@@ -140,44 +140,53 @@ export default class EventInput extends Component {
       <div>
         <form className='form' encType="multipart/form-data" method="post" action="/api/0/events">
           <fieldset>
-            <input type='text' placeholder={this.props.titleLabel} value={this.state.title} onChange={::this.handleTitleChange} />
-            <textarea placeholder={this.props.descriptionLabel} value={this.state.description} onChange={::this.handleDescriptionChange} />
+            <input type='text' placeholder='Название проекта' value={this.state.title} onChange={::this.handleTitleChange} />
+            <textarea className="description" placeholder='Описание' value={this.state.description} onChange={::this.handleDescriptionChange} />
             <Switcher
               options  = { optionsArtist }
               value    = { this.state.artist }
               onChange = { this.handleArtistChange.bind(this) } />
+            <input placeholder='Год' />
+            <a href="#">Добавить год окончания</a>
+            <h2>Картинки</h2>
             {this.props.editing ?
-              <Dropzone
-                onDrop={::this.onDrop}
-                onImageSubmit={this.props.onImageSubmit}
-                accept={'image/*'}
-                disableClick >
-                <div>Try dropping some files here, or click to select files to upload.</div>
-              </Dropzone>
+              <div className="portfolio-drop-zone">
+                <Dropzone
+                  onDrop={::this.onDrop}
+                  onImageSubmit={this.props.onImageSubmit}
+                  accept={'image/*'} >
+                  <div>Перетащите картинку сюда или выберите файл.</div>
+                </Dropzone>
+              </div>
               : null}
             {this.props.images.length > 0 ?
-              <ul onDragOver = { this.handleDragOver.bind(this) }>{this.props.images.map((image, index) => {
-                const url = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
+              <div>
+                <ul className="form-images" onDragOver = { this.handleDragOver.bind(this) }>{this.props.images.map((image, index) => {
+                  const url = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
 
-                return (
-                  <li
-                    onDragStart = { this.handleDragStart.bind(this) }
-                    onDragEnd = { this.handleDragEnd.bind(this) }
-                    data-id = {index}
-                    key = {index} >
-                    <img src={url} />
-                    <input
-                      value={image.caption}
-                      onChange={ this.handleCaptionChange.bind(this, index, image) } />
-                    <Switcher
-                      options  = { optionsImageSize }
-                      value    = { image.size }
-                      onChange = { this.handleSizeChange.bind(this, index, image) } />
-                    <button onClick={::this.handleImageDelete.bind(this, index, image)}>Удалить</button>
-                  </li>
-                )
-              })}
-              </ul>
+                  return (
+                    <li
+                      onDragStart = { this.handleDragStart.bind(this) }
+                      onDragEnd = { this.handleDragEnd.bind(this) }
+                      data-id = {index}
+                      key = {index} >
+                      <div className="image"><img src={url} /></div>
+                      <textarea
+                        placeholder = "Подпись"
+                        value = {image.caption}
+                        onChange = { this.handleCaptionChange.bind(this, index, image) } />
+                      <div>
+                        <Switcher
+                          options  = { optionsImageSize }
+                          value    = { image.size }
+                          onChange = { this.handleSizeChange.bind(this, index, image) } />
+                      </div>
+                      <button onClick={::this.handleImageDelete.bind(this, index, image)}>X</button>
+                    </li>
+                  )
+                })}
+                </ul>
+              </div>
               : null}
             <button type='submit' className='button' onClick={::this.handleSubmit}>{saveText}</button>
           </fieldset>

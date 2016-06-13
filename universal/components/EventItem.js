@@ -65,9 +65,6 @@ export default class EventItem extends Component {
                     onImageSubmit={ this.props.uploadImage } />
       );
     } else {
-      let del = (this.props.editable) ?
-        <button className='destroy pure-button' onClick={ () => deleteEvent(event) }>Удалить</button> :
-        null;
       element = (
         <div>
           <Link to={link}>
@@ -77,9 +74,9 @@ export default class EventItem extends Component {
               </div>
               : null}
             {event.title}
+            Скульптура
+            1996
           </Link>
-          <button onClick={::this.handleClick}>Редактировать</button>
-          {del}
         </div>
       );
     }

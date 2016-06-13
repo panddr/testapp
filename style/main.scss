@@ -14,7 +14,7 @@ body {
   }
 
   h2 {
-    @include header-font-size(1em,1em,1.1em,1.2em);
+    @include header-font-size(1em,1em,1.4em,2em);
   }
 
   h3 {
@@ -68,6 +68,7 @@ input[type=submit],
 .button,
 button {
   background: white;
+  outline: none;
   box-shadow: none;
   transition: background .3s $base-transition-style, color .3s $base-transition-style;
   padding: $grid/5 $grid/4;
@@ -75,6 +76,7 @@ button {
   color: $color-main;
   -webkit-appearance: none;
   border: 1px solid $color-main;
+  text-transform: uppercase!important;
 
   &:hover {
     background: $color-main;
@@ -90,14 +92,118 @@ ul {
   padding: 0;
 }
 
+.portfolio-container {
+  padding: $grid;
+
+  @include respond-to(xlarge) {
+    min-height: 100vh;
+    max-width: $size-xlarge;
+    border-right: 1px solid $color-main;
+  }
+}
+
+.portfolio-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  > li {
+    width: 100%;
+    margin-bottom: $grid*2;
+
+    @include respond-to(small) {
+      width: 50%;
+      padding: 3%;
+    }
+
+    @include respond-to(medium) {
+      width: 33.3%;
+      padding: 2%;
+    }
+
+    @include respond-to(large) {
+      width: 25%;
+    }
+
+    @include respond-to(xlarge) {
+      width: 20%;
+    }
+
+    img {
+      width: 100%;
+      margin-bottom: $grid/4;
+    }
+  }
+}
+
 .form {
-  img {
-    width: 150px;
+  input[type=text],
+  input[type=password],
+  .description {
+    width: 100%;
+    margin-bottom: $grid/2;
+  }
+
+  .description {
+    min-height: 200px;
+  }
+
+  .portfolio-drop-zone {
+    width: 100%;
+    margin-bottom: $grid;
+
+    > div {
+      width: 100%!important;
+      height: auto!important;
+      border-width: 1px!important;
+      border-color: $color-main!important;
+      border-radius: 0!important;
+      text-align: center;
+      padding: $grid*2 $grid;
+    }
+  }
+
+  .form-images {
+    border: 1px solid $color-main;
+    border-bottom: 0;
+    margin-bottom: $grid*2;
+
+    > li {
+      border-bottom: 1px solid $color-main;
+      padding: $grid;
+
+      > * {
+        display: inline-block;
+        vertical-align: top;
+
+        margin-right: $grid/2;
+      }
+
+      textarea {
+        height: 100px;
+        width: 50%;
+      }
+
+      .image {
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+        height: 100px;
+
+        > img {
+          display: block;
+
+          height: 100%;
+        }
+      }
+    }
   }
 }
 
 .placeholder {
   height: 50px;
+  background: $color-main;
   border: 1px solid #111;
 }
 
@@ -113,6 +219,8 @@ input:checked {
 }
 
 .project-container {
+  margin-bottom: $grid*4;
+
   > ul {
     display: flex;
     align-items: center;
@@ -195,8 +303,6 @@ p {
 }
 
 .portfolio-project-list {
-  padding: $grid;
-
   .bio {
     margin-bottom: $grid*2;
 
@@ -214,43 +320,6 @@ p {
 
     > a {
       border-bottom: 1px solid $color-main;
-    }
-  }
-
-  > div {
-    > ul {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-
-      > li {
-        width: 100%;
-        margin-bottom: $grid*2;
-
-        @include respond-to(small) {
-          width: 50%;
-          padding: 3%;
-        }
-
-        @include respond-to(medium) {
-          width: 33.3%;
-          padding: 2%;
-        }
-
-        @include respond-to(large) {
-          width: 25%;
-        }
-
-        @include respond-to(xlarge) {
-          width: 20%;
-        }
-
-        img {
-          width: 100%;
-          margin-bottom: $grid/4;
-        }
-      }
     }
   }
 }

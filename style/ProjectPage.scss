@@ -1,9 +1,8 @@
 @import "mixins";
 
 .project-container {
-  padding: $grid;
-
   > .project-info {
+    position: relative;
     margin-bottom: $grid*2;
 
     @include respond-to(medium) {
@@ -20,6 +19,37 @@
 
     > h1 {
       margin-bottom: 0;
+    }
+
+    > .actions {
+      position: absolute;
+
+      top: 0; right: 0;
+    }
+
+    .description {
+
+      &.active {
+        p {
+          display: block;
+        }
+
+        button {
+          display: none;
+        }
+      }
+
+      > div {
+        margin-bottom: $grid/2;
+      }
+
+      p {
+        display: none;
+
+        &:first-child {
+          display: block;
+        }
+      }
     }
   }
 }

@@ -4,12 +4,9 @@
   align-items: stretch;
   display: flex;
 
+  text-transform: uppercase;
   border: 1px solid $color-main;
-  margin-bottom: $grid/2;
-
-  @include respond-to(small) {
-    margin-bottom: $grid;
-  }
+  margin-bottom: $grid*2;
 
   > label {
     align-items: stretch;
@@ -18,6 +15,10 @@
     width: 50%;
 
     text-align: center;
+
+    &:first-child {
+      border-right: 1px solid $color-main;
+    }
 
     > input {
       display: none;
@@ -29,7 +30,7 @@
       justify-content: center;
       flex: 1;
 
-      padding: $grid/2 $grid;
+      padding: $grid/4 $grid/2;
 
       transition: background $transition-time $base-transition-style, color $transition-time $base-transition-style;
 
@@ -38,8 +39,8 @@
     }
 
     > input:checked + span {
-      background: white;
-      color: $color-accent;
+      background: $color-main;
+      color: white;
     }
   }
 }

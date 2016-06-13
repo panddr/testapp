@@ -38,7 +38,6 @@ class PulseApp extends Component {
         {this.props.badanina}
         {this.props.login}
         {this.props.project}
-        <p>nasedkin@gmail.com  +7 925 186 60 02</p>
       </div>
     );
   }

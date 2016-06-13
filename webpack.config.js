@@ -50,6 +50,10 @@ var moduleLoaders = [
     test: /\.scss?$/,
     loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader']),
     include: __dirname
+  },
+  {
+    test: /\.(eot|svg|ttf|woff|woff2)$/,
+    loader: 'file?name=public/fonts/[name].[ext]'
   }
 ];
 
@@ -76,6 +80,11 @@ if (isDev) {
     }, {
       test: /\.scss?$/,
       loaders: [ 'style', 'css', 'sass', 'postcss-loader' ],
+      include: __dirname
+    },
+    {
+      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      loader: 'file?name=public/fonts/[name].[ext]',
       include: __dirname
     }
   ];

@@ -1,5 +1,6 @@
 @import "variables";
 @import "spinner";
+@import "typography";
 
 @mixin respond-to($media) {
   @if $media == small {

@@ -40,12 +40,13 @@ export default class NasedkinList extends Component {
             <a href="#">инсталляций</a>
             <span>.</span>
           </p>
-          <ul>
+          <ul className="portfolio-list">
             {nasedkin.slice(0,this.props.length).map((event, key) =>
               <EventItem key={key} row={key} id={event.id} event={event} editable={editable} uploadImage={this.props.uploadImage} {...actions} />
             )}
           </ul>
         </div>
+        <p>nasedkin@gmail.com  +7 925 186 60 02</p>
       </section>
     );
   }

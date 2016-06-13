@@ -20,8 +20,8 @@ export default class LoginPage extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const login = "user"
-    const password = "1234"
+    const login = "user";
+    const password = "1234";
     if (this.state.login == login && this.state.password == password) {
       this.setState({ isLoggedIn: true });
       this.props.submitLogin(true);
@@ -48,6 +48,7 @@ export default class LoginPage extends Component {
         {!this.props.isLoggedIn ?
           <div className="overlay">
             <form className='form' method="post" action="/api/0/login">
+              <h1>Вход</h1>
               <fieldset>
                 <input
                   type='text'
@@ -77,6 +78,7 @@ export default class LoginPage extends Component {
               Выйти
             </button>
             <section className='Pulse-addEventForm'>
+              <h1>Создание проекта</h1>
               <EventInput
                 onSubmit={this.props.addEvent}
                 images=''
