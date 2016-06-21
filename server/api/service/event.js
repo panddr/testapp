@@ -65,9 +65,15 @@ export function getEvents() {
 // }
 
 export function addEvent(event) {
+  const md = marked(event.description.toString(), {sanitize: true});
+  const desciptionTp = new Mdash(md);
+  const titleTp = new Mdash(event.title);
+  const tp = new Mdash(md);
   event.created = new Date();
   event.description = xss(event.description);
-  event.slug = slug(event.title);
+  event.descriptionFormated = desciptionTp.format();
+  event.titleFormated = titleTp.format();
+  event.slug = slug(event.title) + '-' + event.id;
 
   return r
     .table('pulses')

@@ -10,11 +10,13 @@ import DevTools from '../universal/containers/devTools';
 
 const isDev = (process.env.NODE_ENV !== 'production');
 
+require('dotenv').config();
+
 export function handleRender(req, res) {
   console.log(' [x] Request for', req.url);
   eventService.getEvents()
   .then(initialEvents => {
-    let initialState = {pulseApp: { events: initialEvents, isLoggedIn: false, userId: 'baseUser'} };
+    let initialState = {pulseApp: { events: initialEvents, isLoggedIn: false, userId: 'baseUser', login: process.env.LOGIN, password: process.env.PASSWORD } };
 
     const store = configureStore(req, initialState);
 

@@ -38,6 +38,7 @@ class PulseApp extends Component {
         {this.props.badanina}
         {this.props.login}
         {this.props.project}
+        {this.props.noMatch}
       </div>
     );
   }

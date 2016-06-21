@@ -6,22 +6,25 @@ import * as PulseActions from '../actions/PulseActions';
 export default class LoginPage extends Component {
   static propTypes = {
     submitLogin: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool
+    uploadImage: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool,
+    login: PropTypes.string,
+    password: PropTypes.string
   }
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       isLoggedIn: false,
-      login: this.props.login || '',
-      password: this.props.password || ''
+      login: '',
+      password: ''
     };
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const login = "user";
-    const password = "1234";
+    const login = this.props.login;
+    const password = this.props.password;
     if (this.state.login == login && this.state.password == password) {
       this.setState({ isLoggedIn: true });
       this.props.submitLogin(true);
@@ -53,12 +56,10 @@ export default class LoginPage extends Component {
                 <input
                   type='text'
                   placeholder='Логин'
-                  value={this.state.title}
                   onChange={::this.handleLoginChange} />
                 <input
                   type='password'
                   placeholder='******'
-                  value={this.state.password}
                   onChange={::this.handlePasswordChange} />
                 <button
                   type='submit'
@@ -81,12 +82,9 @@ export default class LoginPage extends Component {
               </button>
             </header>
             <section className='portfolio-form'>
-              <EventInput
-                onSubmit={this.props.addEvent}
-                images=''
-                onImageSubmit={ (event) => this.props.uploadImage(Object.assign({}, event, { id: id }))}
-                titleLabel='Название проекта'
-                descriptionLabel='Описание' />
+              <EventInput onSubmit={ this.props.addEvent }
+                          editing={ true }
+                          onImageSubmit={ this.props.uploadImage } />
             </section>
           </div>
         }

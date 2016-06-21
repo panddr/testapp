@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import EventInput from './EventInput';
 import EventItem from './EventItem';
+import DocumentMeta from 'react-document-meta';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -28,9 +29,12 @@ export default class ProjectPage extends Component {
     super(props, context);
     this.state = {
       editing: false,
+      deleting: false,
       loadMore: false,
       related: [],
-      projectCategories: []
+      projectCategories: [],
+      imgWidthMeta: '',
+      imgHeightMeta: ''
     };
   }
 
@@ -45,13 +49,16 @@ export default class ProjectPage extends Component {
     this.showRelated(related, categories);
 
     this.setState({ loadMore: false });
+
+    const img = document.querySelectorAll(".project-container ul li .image img")[0];
+    this.setState({ imgWidthMeta: img.naturalWidth });
+    this.setState({ imgHeightMeta: img.naturalHeight });
   }
 
   componentWillReceiveProps(nextProps) {
     let { slug } = nextProps.slug;
     const projectArray = nextProps.events.filter(project => project.slug === slug);
 
-    console.log(nextProps.slug)
     const project = projectArray[0];
     const artist = project.artist;
     const categories = project.categories;
@@ -87,6 +94,11 @@ export default class ProjectPage extends Component {
     }
   }
 
+  handleConfirm() {
+    console.log(this.state.deleting)
+    this.setState({ deleting: !this.state.deleting });
+  }
+
   showRelated(related, categories) {
     let results = new Array();
     let projectCategories = new Array();
@@ -120,7 +132,7 @@ export default class ProjectPage extends Component {
 
   handleImageZoom(e) {
     const img = e.target;
-    const body = document.getElementsByTagName("body")[0]
+    const body = document.getElementsByTagName("body")[0];
 
     if (img.parentNode.classList.contains("active")) {
       img.parentNode.classList.remove("active");
@@ -188,6 +200,37 @@ export default class ProjectPage extends Component {
     const id = project.id;
     let element;
     let header;
+    let confirmDeleting;
+
+    const descriptionShortent = project.description.substring(0, 160);
+    const urlMeta = 'http://nasedkin-badanina.com/project/' + slug;
+    const imgMeta = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + project.images[0].key;
+
+    const meta = {
+      title: project.title,
+      description: descriptionShortent,
+      canonical: urlMeta,
+      meta: {
+        charset: 'utf-8',
+        name: {
+          keywords: 'Наседкин,Владимир,Баданина,Татьяна'
+        },
+        property: {
+          "og:title": project.title,
+          "og:url": urlMeta,
+          "og:description": descriptionShortent,
+          "og:image": imgMeta,
+          "og:image:width": this.state.imgWidthMeta,
+          "og:image:height": this.state.imgHeightMeta,
+          "twitter:title": project.title,
+          "twitter:description": descriptionShortent,
+          "twitter:image": imgMeta,
+          "twitter:image:width": this.state.imgWidthMeta,
+          "twitter:image:height": this.state.imgHeightMeta,
+          "twitter:card": "summary_large_image"
+        }
+      }
+    };
 
     if (artist == 'nasedkin') {
       header = (
@@ -202,6 +245,20 @@ export default class ProjectPage extends Component {
           <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
           <h1 className="active"><Link to='/badanina' activeClassName='active'>Татьяна Баданина</Link></h1>
         </div>
+      );
+    }
+
+    if (this.state.deleting) {
+      confirmDeleting = (
+        <div className="confirm-deleting">
+          Удалить проект?
+          <button onClick={ () => this.props.deleteEvent(project) }>Да</button>
+          <button onClick={ ::this.handleConfirm }>Нет</button>
+        </div>
+      );
+    } else {
+      confirmDeleting = (
+        <button onClick={ ::this.handleConfirm }>X</button>
       );
     }
 
@@ -226,7 +283,7 @@ export default class ProjectPage extends Component {
       let actions = (this.props.isLoggedIn) ?
         <div className="actions">
           <button className="button-edit" onClick={::this.handleClick}>✎</button>
-          <button onClick={ () => this.props.deleteEvent(project) }>X</button>
+          { confirmDeleting }
         </div> :
         null;
       element = (
@@ -281,6 +338,7 @@ export default class ProjectPage extends Component {
 
     return (
       <div>
+        <DocumentMeta {...meta} />
         {element}
       </div>
     );

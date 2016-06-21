@@ -39,8 +39,6 @@ export default class NasedkinList extends Component {
     const { events, actions } = this.props;
     const nasedkin = events.filter(row => row.artist == 'nasedkin').filter(row => row.isFeatured == true);
 
-    console.log(this.state.projects);
-
     let editable = true;
 
     return (

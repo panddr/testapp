@@ -31,6 +31,14 @@
       > .button-edit {
         margin-right: $grid/2;
       }
+
+      > .confirm-deleting {
+        display: inline-block;
+
+        > span {
+          margin-right: $grid/4;
+        }
+      }
     }
 
     .button-load-more {

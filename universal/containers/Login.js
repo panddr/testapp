@@ -8,13 +8,16 @@ import * as PulseActions from '../actions/PulseActions';
 class Login extends Component {
   static propTypes = {
     addEvent: React.PropTypes.func.isRequired,
+    uploadImage: React.PropTypes.func.isRequired,
     submitLogin: React.PropTypes.func.isRequired,
-    isLoggedIn: React.PropTypes.bool
+    isLoggedIn: React.PropTypes.bool,
+    login: React.PropTypes.string,
+    password: React.PropTypes.string
   }
 
   render() {
     return (
-      <LoginPage submitLogin={this.props.submitLogin} isLoggedIn={this.props.isLoggedIn} addEvent={this.props.addEvent} />
+      <LoginPage submitLogin={this.props.submitLogin} uploadImage={this.props.uploadImage} isLoggedIn={this.props.isLoggedIn} login={this.props.login} password={this.props.password} addEvent={this.props.addEvent} />
     );
   }
 }
@@ -24,7 +27,9 @@ class Login extends Component {
  */
 export default connect(
   state => ({
-    isLoggedIn: state.pulseApp.isLoggedIn
+    isLoggedIn: state.pulseApp.isLoggedIn,
+    login: state.pulseApp.login,
+    password: state.pulseApp.password
   }),
   dispatch => bindActionCreators(PulseActions, dispatch)
 )(Login);

@@ -29,7 +29,7 @@ export default class EventInput extends Component {
       errors: [],
       title: this.props.title || '',
       description: this.props.description || '',
-      isFeatured: this.props.isFeatured || false,
+      isFeatured: this.props.isFeatured || true,
       artist: this.props.artist || 'nasedkin',
       categories: this.props.categories || optionsCategories,
       yearStart: this.props.yearStart || '',
@@ -108,6 +108,7 @@ export default class EventInput extends Component {
 
   handleImageDelete(index, image, e) {
     const images = this.props.images.slice();
+    e.preventDefault();
     images.splice(index,1);
     this.props.removeImagesFromStore(images);
   }
