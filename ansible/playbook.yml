@@ -16,6 +16,7 @@
     apt_repository: repo='deb http://download.rethinkdb.com/apt trusty main' state=present
   - name: update apt caches
     apt: update_cache=yes
+  - apt: name=git state=present
   - name: install nodejs
     apt: name=nodejs state=present
   - name: install retghinkdb
@@ -23,6 +24,14 @@
   - name: copy rethinkdb config file
     copy: src=default.conf dest=/etc/rethinkdb/instances.d/default.conf
     notify: init rethinkdb
+
+  - file: path=/var/apps state=directory mode=0755
+  - name: clone github repo
+    git: repo=https://github.com/panddr/testapp.git dest=/var/apps/nb
+  - name: npm install
+    npm: path=/var/apps/nb
+
+
 
   handlers:
   - name: init rethinkdb
