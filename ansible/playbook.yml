@@ -2,6 +2,12 @@
   gather_facts: yes
   become: yes
   tasks:
+  - name: add panddr user
+    user: name=panddr shell=/bin/bash groups=sudo append=yes
+  - authorized_key: user=panddr key=https://github.com/panddr.keys
+  - user: name=kralin shell=/bin/bash groups=sudo append=yes
+  - authorized_key: user=kralin key=https://github.com/kralin.keys
+  - apt: name=apt-transport-https state=present
   - apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
   - apt_key: url=http://download.rethinkdb.com/apt/pubkey.gpg state=present
   - name: add node.js repo key
