@@ -6,6 +6,8 @@ const r = require('rethinkdbdash')(config.get('rethinkdb'));
 
 import config from 'config';
 import xss from 'xss';
+import Mdash from 'mdash-node';
+import marked from 'marked';
 import slug from 'limax';
 
 function connect() {
@@ -41,7 +43,7 @@ export function liveUpdates(io) {
 export function getEvents() {
   return r
     .table('pulses')
-    .orderBy(r.desc('created')).run();
+    .orderBy(r.desc('yearStart')).run();
 
   // return connect()
   // .then(conn => {
@@ -89,9 +91,15 @@ export function addEvent(event) {
 }
 
 export function editEvent(id, event) {
+  const md = marked(event.description.toString(), {sanitize: true});
+  const desciptionTp = new Mdash(md);
+  const titleTp = new Mdash(event.title);
+  const tp = new Mdash(md);
   event.updated = new Date();
   event.description = xss(event.description);
-  event.slug = slug(event.title);
+  event.descriptionFormated = desciptionTp.format();
+  event.titleFormated = titleTp.format();
+  event.slug = slug(event.title) + '-' + event.id;
   return r
     .table('pulses')
     .get(id).update(event).run()

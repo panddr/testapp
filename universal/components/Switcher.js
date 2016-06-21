@@ -9,7 +9,8 @@ class Switcher extends Component {
   static propTypes = {
     options:  PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
-    value:    PropTypes.string
+    value:    PropTypes.string,
+    type:     PropTypes.string
   }
 
 
@@ -27,7 +28,7 @@ class Switcher extends Component {
       return (
         <label key = { index } >
           <input
-            type     = "radio"
+            type     = { this.props.type }
             value    = { option.value }
             onChange = { this.handleChange.bind(this, option.value) }
             checked  = { this.props.value === option.value } />

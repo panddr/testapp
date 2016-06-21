@@ -12,7 +12,9 @@ export default (
   <Route path='/' component={PulseApp}>
     <IndexRoute components={{home: Home}} />
     <Route path='nasedkin' components={{nasedkin: Nasedkin}} />
+    <Route path='nasedkin/:slug' components={{nasedkin: Nasedkin}} />
     <Route path='badanina' components={{badanina: Badanina}} />
+    <Route path='badanina/:slug' components={{badanina: Badanina}} />
     <Route path='login' components={{login: Login}} />
     <Route path='project/:slug' components={{project: Project}} />
   </Route>

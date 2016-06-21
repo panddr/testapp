@@ -29,7 +29,11 @@ export default class EventInput extends Component {
       errors: [],
       title: this.props.title || '',
       description: this.props.description || '',
-      artist: this.props.artist || 'nasedkin'
+      isFeatured: this.props.isFeatured || false,
+      artist: this.props.artist || 'nasedkin',
+      categories: this.props.categories || optionsCategories,
+      yearStart: this.props.yearStart || '',
+      yearEnd: this.props.yearEnd || ''
     };
   }
 
@@ -44,7 +48,7 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({title: this.state.title, description: this.state.description, artist: this.state.artist, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
+      this.props.onSubmit({title: this.state.title, description: this.state.description, artist: this.state.artist, isFeatured: this.state.isFeatured, categories: this.state.categories, yearStart: this.state.yearStart, yearEnd: this.state.yearEnd, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
       this.setState({title: ''});
     }
   }
@@ -59,6 +63,31 @@ export default class EventInput extends Component {
 
   handleArtistChange(e) {
     this.setState({ artist: e });
+  }
+
+  handleCategoriesChange(checked, index, e) {
+    let categories = this.state.categories;
+    e.target.value;
+
+    if (checked) {
+      categories[index].checked = false;
+      this.setState({ categories: categories });
+    } else {
+      categories[index].checked = true;
+      this.setState({ categories: categories });
+    }
+  }
+
+  handleFeaturedChange(e) {
+    this.setState({ isFeatured: !this.state.isFeatured });
+  }
+
+  handleYearStartChange(e) {
+    this.setState({ yearStart: e.target.value });
+  }
+
+  handleYearEndChange(e) {
+    this.setState({ yearEnd: e.target.value });
   }
 
   handleCaptionChange(index, image, e) {
@@ -144,11 +173,30 @@ export default class EventInput extends Component {
             <textarea className="description" placeholder='Описание' value={this.state.description} onChange={::this.handleDescriptionChange} />
             <Switcher
               options  = { optionsArtist }
+              type     = 'radio'
               value    = { this.state.artist }
               onChange = { this.handleArtistChange.bind(this) } />
-            <input placeholder='Год' />
-            <a href="#">Добавить год окончания</a>
-            <h2>Картинки</h2>
+            <div className="grabr-switcher">
+              {this.state.categories.map((category, index) => {
+                const checked = category.checked;
+                return (
+                  <label key = { index } >
+                    <input type="checkbox" checked={checked} value={category.value} onChange={::this.handleCategoriesChange.bind(this, checked, index)} />
+                    { category.labelText }
+                  </label>
+                );
+              })}
+            </div>
+            <div className="years">
+              <input type='text' placeholder='Год' value={this.state.yearStart} onChange={::this.handleYearStartChange} />
+              <input type='text' placeholder='Год окончания' value={this.state.yearEnd} onChange={::this.handleYearEndChange} />
+            </div>
+            <div className="featured">
+              <label>
+                <input type='checkbox' checked={this.state.isFeatured} value={this.state.isFeatured} onChange={::this.handleFeaturedChange} />
+                На главную
+              </label>
+            </div>
             {this.props.editing ?
               <div className="portfolio-drop-zone">
                 <Dropzone
@@ -178,6 +226,7 @@ export default class EventInput extends Component {
                       <div>
                         <Switcher
                           options  = { optionsImageSize }
+                          type     = 'radio'
                           value    = { image.size }
                           onChange = { this.handleSizeChange.bind(this, index, image) } />
                       </div>
@@ -229,5 +278,38 @@ const optionsArtist = [
   {
     value: "badanina",
     labelText: "Татьяна Баданина"
+  }
+]
+
+const optionsCategories = [
+  {
+    value: "painting",
+    labelText: "Живопись",
+    checked: false
+  },
+  {
+    value: "graphics",
+    labelText: "Графика",
+    checked: false
+  },
+  {
+    value: "sculpture",
+    labelText: "Скульптура",
+    checked: false
+  },
+  {
+    value: "photography",
+    labelText: "Фотография",
+    checked: false
+  },
+  {
+    value: "object",
+    labelText: "Объект",
+    checked: false
+  },
+  {
+    value: "installation",
+    labelText: "Инсталяция",
+    checked: false
   }
 ]

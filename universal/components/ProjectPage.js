@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import EventInput from './EventInput';
-import marked from 'marked';
 import EventItem from './EventItem';
 
 import { connect } from 'react-redux';
@@ -29,14 +28,36 @@ export default class ProjectPage extends Component {
     super(props, context);
     this.state = {
       editing: false,
-      loadMore: false
+      loadMore: false,
+      related: [],
+      projectCategories: []
     };
+  }
+
+  componentDidMount() {
+    let { slug } = this.props.slug;
+    const projectArray = this.props.events.filter(project => project.slug === slug);
+
+    const project = projectArray[0];
+    const artist = project.artist;
+    const categories = project.categories;
+    const related = this.props.events.filter(project => project.artist === artist).filter(project => project.slug != slug);
+    this.showRelated(related, categories);
+
+    console.log(categories)
   }
 
   rawMarkup() {
     let { slug } = this.props.slug;
     const project = this.props.events.filter(project => project.slug === slug );
-    const rawMarkup = marked(project[0].description.toString(), {sanitize: true});
+    const rawMarkup = project[0].descriptionFormated;
+    return { __html: rawMarkup };
+  }
+
+  rawMarkupTitle() {
+    let { slug } = this.props.slug;
+    const project = this.props.events.filter(project => project.slug === slug );
+    const rawMarkup = project[0].titleFormated;
     return { __html: rawMarkup };
   }
 
@@ -48,6 +69,86 @@ export default class ProjectPage extends Component {
       this.setState({ editing: true });
 
       this.props.addImagesToStore(project[0].images);
+      window.scrollTo(0, 0);
+    }
+  }
+
+  showRelated(related, categories) {
+    let results = new Array();
+    let projectCategories = new Array();
+
+    categories.map((category) => {
+      if (category.checked) {
+        projectCategories.push(category.value);
+      }
+    });
+
+    related.map((project) => {
+      if (project.categories) {
+        project.categories.map((category) => {
+          projectCategories.map((projectCategory) => {
+            if (category.value === projectCategory && category.checked && !results.find(result => result.title === project.title)) {
+              results.push(project);
+            }
+          })
+        })
+      }
+    });
+
+    this.setState({ related: results });
+    this.setState({ projectCategories: projectCategories });
+  }
+
+  handleCancel() {
+    this.setState({ editing: false });
+    window.scrollTo(0, 0);
+  }
+
+  handleImageZoom(e) {
+    const img = e.target;
+    const body = document.getElementsByTagName("body")[0]
+
+    if (img.parentNode.classList.contains("active")) {
+      img.parentNode.classList.remove("active");
+      body.classList.remove("hidden");
+
+      img.setAttribute('style','transform:translate(0,0) scale(1); -webkit-transform:translate(0,0) scale(1); width:100%; height:auto;');
+    } else {
+      const wWidth = window.innerWidth;
+      const wHeight = window.innerHeight;
+      const wDimensions = wWidth/wHeight;
+
+      const imgNaturalWidth = img.naturalWidth;
+      const imgNaturalHeight = img.naturalHeight;
+
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      const imgDimensions = imgWidth/imgHeight;
+
+      img.parentNode.classList.add("active");
+      body.classList.add("hidden");
+
+      const x = wWidth/2 - img.offsetLeft - imgWidth/2;
+      const y = wHeight/2 - img.offsetTop - imgHeight/2 + window.pageYOffset;
+      let scale;
+
+      if (wDimensions > 1) {
+        if (wHeight > imgNaturalHeight) {
+          scale = imgNaturalHeight/imgHeight;
+        } else {
+          scale = wHeight/imgHeight;
+        }
+
+        img.setAttribute('style','transform:translate(' + x + 'px,' + y + 'px) scale(' + scale + '); -webkit-transform:translate(' + x + 'px,' + y + 'px scale(' + scale + '); width:100%; height:auto;');
+      } else {
+        if (wWidth > imgNaturalWidth) {
+          scale = imgNaturalWidth/imgWidth;
+        } else {
+          scale = wWidth/imgWidth;
+        }
+
+        img.setAttribute('style','transform:translate(' + x + 'px,' + y + 'px) scale(' + scale + '); -webkit-transform:translate(' + x + 'px,' + y + 'px scale(' + scale + '); width:100%; height:auto;');
+      }
     }
   }
 
@@ -66,9 +167,9 @@ export default class ProjectPage extends Component {
 
   render() {
     let { slug } = this.props.slug;
-    const projectArray = this.props.events.filter(project => project.slug === slug );
+    const projectArray = this.props.events.filter(project => project.slug === slug);
+
     const project = projectArray[0];
-    const related = this.props.events;
     const artist = project.artist;
     const id = project.id;
     let element;
@@ -96,17 +197,22 @@ export default class ProjectPage extends Component {
           <h1>Редактирование</h1>
           <EventInput title={project.title}
                       description={project.description}
+                      yearStart={project.yearStart}
+                      yearEnd={project.yearEnd}
                       artist={project.artist}
+                      isFeatured={project.isFeatured}
+                      categories={project.categories}
                       editing={this.state.editing}
                       onSubmit={ (project) => this.handleSave(Object.assign({}, project, { id: id })) }
                       onImageSubmit={ this.props.uploadImage } />
+          <button type='submit' className='cancel-button' onClick={::this.handleCancel}>Отменить</button>
         </div>
       );
     } else {
       let actions = (this.props.isLoggedIn) ?
         <div className="actions">
-          <button onClick={::this.handleClick}>✎</button>
-          <Link to='/nasedkin' onClick={ () => this.props.deleteEvent(project) }>X</Link>
+          <button className="button-edit" onClick={::this.handleClick}>✎</button>
+          <button onClick={ () => this.props.deleteEvent(project) }>X</button>
         </div> :
         null;
       element = (
@@ -116,14 +222,20 @@ export default class ProjectPage extends Component {
               { header }
             </header>
             <div className="project-info">
-              <h1>
-                {project.title}
-              </h1>
               <div className={ this.state.loadMore ? 'description active' : 'description' }>
-                <div dangerouslySetInnerHTML={this.rawMarkup()} />
-                <button onClick={::this.handleLoadMore}>Подробнее</button>
+                <h1>
+                  <span dangerouslySetInnerHTML={this.rawMarkupTitle()} />
+                  <sup>
+                    <span className="date">{project.yearStart}</span>
+                    {project.yearEnd ?
+                      <span className="date">&ndash;{project.yearStart}</span>
+                      : null}
+                  </sup>
+                </h1>
+                <div className="text" dangerouslySetInnerHTML={this.rawMarkup()} />
+                <button className="button-load-more" onClick={::this.handleLoadMore}>Подробнее</button>
+                {actions}
               </div>
-              {actions}
             </div>
             {project.images.length > 0 ?
               <ul>{project.images.map((image, index) => {
@@ -131,7 +243,7 @@ export default class ProjectPage extends Component {
                 const key = image.key
                 return (
                   <li key={index} className={image.size}>
-                    <img src={imageUrl} />
+                    <div className="image"><img onClick={::this.handleImageZoom} src={imageUrl} /></div>
                     {image.caption}
                   </li>
                 )
@@ -139,14 +251,16 @@ export default class ProjectPage extends Component {
               </ul>
               : null}
           </section>
-          <section className="related">
-            <h2>Другие проекты</h2>
-            <ul className="portfolio-list">
-              {related.slice(0,this.props.length).map((event, key) =>
-                <EventItem key={key} row={key} id={event.id} event={event} />
-              )}
-            </ul>
-          </section>
+          {this.state.related.length > 0 ?
+            <section className="related">
+              <h2>Похожие проекты</h2>
+              <ul className="portfolio-list">
+                {this.state.related.slice(0,this.props.length).map((event, key) =>
+                  <EventItem key={key} row={key} id={event.id} event={event} />
+                )}
+              </ul>
+            </section>
+          : null}
         </div>
       );
     }

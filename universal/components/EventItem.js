@@ -36,6 +36,12 @@ export default class EventItem extends Component {
     }
   }
 
+  rawMarkupTitle() {
+    let { event } = this.props;
+    const rawMarkup = event.titleFormated;
+    return { __html: rawMarkup };
+  }
+
   handleSave(event) {
     if (event.title.length === 0) {
       this.props.deleteEvent(event);
@@ -48,41 +54,41 @@ export default class EventItem extends Component {
   render() {
     const { id, event, editEvent, deleteEvent } = this.props;
 
-    let element;
-    let modified = (event.updated) ? event.updated : event.created;
-
     const imageUrl = (event.images.length > 0) ? 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + event.images[0].key : null;
 
     const link = '/project/' + event.slug;
 
-    if (this.state.editing) {
-      element = (
-        <EventInput title={event.title}
-                    description={event.description}
-                    artist={event.artist}
-                    editing={this.state.editing}
-                    onSubmit={ (event) => this.handleSave(Object.assign({}, event, { id: id })) }
-                    onImageSubmit={ this.props.uploadImage } />
-      );
-    } else {
-      element = (
-        <div>
+    return (
+      <li className='portfolio-project-item'>
+        <article>
           <Link to={link}>
             {event.images.length > 0 ?
               <div>
                 <img src={imageUrl} />
               </div>
               : null}
-            {event.title}
-            Скульптура
-            1996
+            <h2><span dangerouslySetInnerHTML={this.rawMarkupTitle()} /></h2>
+            {event.categories ?
+              <div className="categories">
+                {event.categories.map((category, index) => {
+                  if (category.checked) {
+                    return (
+                      <span key = { index } >
+                        { category.labelText }
+                        ,&nbsp;
+                      </span>
+                    );
+                  }
+                })}
+              </div>
+              : null}
+            <span className="date">{event.yearStart}</span>
+            {event.yearEnd ?
+              <span className="date">&ndash;{event.yearStart}</span>
+              : null}
           </Link>
-        </div>
-      );
-    }
-
-    return (
-      <li className='portfolio-project-item'>{element}</li>
+        </article>
+      </li>
     );
   }
 }

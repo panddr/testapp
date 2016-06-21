@@ -1,53 +1,102 @@
 @import "mixins";
 
+.related {
+  > h2 {
+    @include respond-to(large) {
+      margin: auto;
+      margin-bottom: $grid;
+      max-width: 90%;
+    }
+  }
+}
+
 .project-container {
   > .project-info {
     position: relative;
     margin-bottom: $grid*2;
 
-    @include respond-to(medium) {
-      font-size: 1.4em;
-    }
-
     @include respond-to(large) {
-      font-size: 2em;
+      margin: auto;
+      margin-bottom: $grid*4;
+      max-width: 90%;
     }
 
-    @include respond-to(xlarge) {
-      font-size: 2.4em;
+    .actions {
+      display: inline-block;
+
+      > .button-edit {
+        margin-right: $grid/2;
+      }
     }
 
-    > h1 {
-      margin-bottom: 0;
-    }
-
-    > .actions {
-      position: absolute;
-
-      top: 0; right: 0;
+    .button-load-more {
+      border: 0;
+      border-bottom: 1px solid $color-main;
+      padding: 0;
     }
 
     .description {
-
       &.active {
         p {
           display: block;
         }
 
-        button {
+        .button-load-more,
+        .actions {
           display: none;
         }
       }
 
-      > div {
-        margin-bottom: $grid/2;
+      > .date {
+        margin-right: $grid/2;
+      }
+
+      > h1 {
+        font-size: 1em;
+        line-height: 1.4;
+
+        > sup {
+          margin-left: $grid/4;
+          font-size: .6em;
+          top: -1em;
+        }
+      }
+
+      > .actions {
+        opacity: .5;
+        margin-left: $grid;
+
+        button {
+          border: 0;
+        }
       }
 
       p {
         display: none;
 
+        @include respond-to(large) {
+          width: 50%;
+        }
+
         &:first-child {
-          display: block;
+          display: inline-block;
+
+          font-size: 1.2em;
+          margin-bottom: $grid;
+          width: 100%;
+
+          @include respond-to(medium) {
+            font-size: 2em;
+          }
+
+          @include respond-to(large) {
+            line-height: 1.1;
+            font-size: 2.6em;
+          }
+
+          @include respond-to(xlarge) {
+            font-size: 3em;
+          }
         }
       }
     }

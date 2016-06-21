@@ -71,14 +71,16 @@ export default class LoginPage extends Component {
           </div>
           :
           <div>
-            <button
-              type='submit'
-              className='button'
-              onClick={::this.handleLogout}>
-              Выйти
-            </button>
-            <section className='Pulse-addEventForm'>
-              <h1>Создание проекта</h1>
+            <header className="portfolio-header">
+              <h1>Админка</h1>
+              <button
+                type='submit'
+                className='button'
+                onClick={::this.handleLogout}>
+                Выйти
+              </button>
+            </header>
+            <section className='portfolio-form'>
               <EventInput
                 onSubmit={this.props.addEvent}
                 images=''

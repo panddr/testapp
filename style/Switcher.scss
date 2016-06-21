@@ -6,18 +6,18 @@
 
   text-transform: uppercase;
   border: 1px solid $color-main;
-  margin-bottom: $grid*2;
+  margin-bottom: $grid;
 
   > label {
     align-items: stretch;
     display: flex;
 
+    border-right: 1px solid $color-main;
     width: 50%;
-
     text-align: center;
 
-    &:first-child {
-      border-right: 1px solid $color-main;
+    &:last-child {
+      border: 0;
     }
 
     > input {

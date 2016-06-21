@@ -9,12 +9,16 @@ body {
   margin: 0; padding: 0;
   min-width: 320px;
 
+  &.hidden {
+    overflow: hidden;
+  }
+
   h1 {
-    @include header-font-size(1em,1em,1.4em,2em);
+    @include header-font-size(1.2em,1.3em,1.4em,2em);
   }
 
   h2 {
-    @include header-font-size(1em,1em,1.4em,2em);
+    @include header-font-size(1.2em,1.3em,1.4em,2em);
   }
 
   h3 {
@@ -23,6 +27,10 @@ body {
 
   h4 {
     @include header-font-size(1em,1.1em,1.2em,1.2em);
+  }
+
+  p {
+    line-height: 1.2;
   }
 }
 
@@ -85,6 +93,13 @@ button {
   }
 }
 
+.cancel-button {
+  border: 0;
+  position: relative;
+  top: -30px;
+  left: 130px;
+}
+
 ul {
   list-style: none;
   list-style-image: none;
@@ -94,55 +109,108 @@ ul {
 
 .portfolio-container {
   padding: $grid;
-
-  @include respond-to(xlarge) {
-    min-height: 100vh;
-    max-width: $size-xlarge;
-    border-right: 1px solid $color-main;
-  }
 }
 
 .portfolio-list {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
+
+  margin-right: -$grid;
+  margin-bottom: $grid*4;
 
   > li {
-    width: 100%;
+    width: 50%;
     margin-bottom: $grid*2;
-
-    @include respond-to(small) {
-      width: 50%;
-      padding: 3%;
-    }
+    padding-right: $grid;
 
     @include respond-to(medium) {
-      width: 33.3%;
-      padding: 2%;
-    }
-
-    @include respond-to(large) {
       width: 25%;
     }
 
+    @include respond-to(large) {
+      width: 16.6%;
+    }
+
     @include respond-to(xlarge) {
-      width: 20%;
+      width: 12.5%;
     }
 
     img {
+      display: block;
+
       width: 100%;
-      margin-bottom: $grid/4;
+      margin-bottom: $grid/2;
     }
+
+    a {
+      border: 0;
+
+      &:hover {
+        background: transparent;
+        color: $color-main;
+      }
+    }
+
+    h2 {
+      font-size: .8em;
+      margin-bottom: $grid/2;
+
+      @include respond-to(small) {
+        font-size: 1em;
+      }
+    }
+
+    .date,
+    .categories {
+      font-size: .8em;
+      line-height: 1;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+
+      span:last-child span:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+.portfolio-footer {
+  font-size: .8em;
+
+  @include respond-to(large) {
+    margin: auto;
+    max-width: 90%;
+  }
+
+  a,
+  span {
+    margin-right: $grid;
   }
 }
 
 .form {
   input[type=text],
   input[type=password],
+  .featured,
   .description {
     width: 100%;
     margin-bottom: $grid/2;
+  }
+
+  .featured input {
+    margin-right: $grid/4;
+  }
+
+  .years {
+    display: flex;
+
+    input {
+      width: 50%;
+    }
   }
 
   .description {
@@ -221,11 +289,18 @@ input:checked {
 .project-container {
   margin-bottom: $grid*4;
 
+  @include respond-to(large) {
+    margin-bottom: $grid*10;
+  }
+
   > ul {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
+
+    @include respond-to(small) {
+      margin-right: -$grid;
+    }
 
     > li {
       width: 100%;
@@ -233,16 +308,18 @@ input:checked {
 
       @include respond-to(small) {
         width: 50%;
-        padding: 2%;
+        padding-right: $grid;
       }
 
       @include respond-to(medium) {
-        width: 33.3%;
-        padding: 3%;
+        width: 25%;
+        margin-bottom: $grid*4;
       }
 
-      @include respond-to(xlarge) {
-        padding: 5%;
+      > span {
+        display: inline-block;
+
+        font-size: .8em;
       }
 
       &.small {
@@ -251,27 +328,63 @@ input:checked {
         }
 
         @include respond-to(medium) {
-          width: 33.3%;
+          width: 25%;
         }
       }
 
       &.medium {
-        @include respond-to(small) {
-          width: 70%;
-        }
+        width: 100%;
 
-        @include respond-to(medium) {
+        @include respond-to(small) {
           width: 50%;
         }
       }
 
       &.large {
         width: 100%;
+
+        @include respond-to(medium) {
+          width: 75%;
+        }
       }
 
-      > img {
-        width: 100%;
+      > .image {
         margin-bottom: $grid/4;
+        width: 100%;
+
+        &:before {
+          transition: opacity .3s $base-transition-style, visibility .3s $base-transition-style;
+          content: '';
+
+          background: black;
+          position: fixed;
+          z-index: 2;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          visibility: hidden; opacity: 0;
+        }
+
+        &.active {
+          &:before {
+            opacity: 1; visibility: visible;
+          }
+
+          > img {
+            cursor: zoom-out;
+
+            z-index: 9;
+          }
+        }
+
+        > img {
+          cursor: zoom-in;
+
+          transition: transform .3s $base-transition-style, z-index .3s $base-transition-style;
+          position: relative;
+          display: block;
+          width: 100%;
+          z-index: 1;
+        }
       }
     }
   }
@@ -290,6 +403,14 @@ input:checked {
       padding-top: $grid*2;
     }
   }
+
+  .portfolio-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    width: 100%;
+  }
 }
 
 p {
@@ -305,21 +426,32 @@ p {
 .portfolio-project-list {
   .bio {
     margin-bottom: $grid*2;
+    font-size: 1.2em;
+    line-height: 1.4;
 
     @include respond-to(medium) {
-      font-size: 1.4em;
+      font-size: 2em;
+      line-height: 1.3;
     }
 
     @include respond-to(large) {
-      font-size: 2em;
+      font-size: 2.6em;
+      margin: auto;
+      margin-bottom: $grid*4;
+      max-width: 90%;
     }
 
     @include respond-to(xlarge) {
-      font-size: 2.4em;
+      font-size: 3em;
     }
 
     > a {
       border-bottom: 1px solid $color-main;
+
+      &.active {
+        background: $color-main;
+        color: white;
+      }
     }
   }
 }
@@ -329,27 +461,33 @@ p {
   width: 100%;
 
   @include respond-to(large) {
+    margin: auto;
     margin-bottom: $grid*4;
+    max-width: 90%;
   }
 
   > .portfolio-links {
     display: flex;
+    justify-content: space-between;
+
+    @include respond-to(small) {
+      justify-content: flex-start;
+    }
 
     h1 {
-      width: 50%;
-      padding-right: 15%;
+      width: 140px;
+      line-height: 1.4;
+      font-size: 1em;
+      margin-bottom: 0;
 
       @include respond-to(small) {
-        padding-right: 0;
+        width: 50%;
       }
 
       &:last-child {
         text-align: right;
-        padding-left: 15%;
-        padding-right: 0;
 
         @include respond-to(small) {
-          padding-left: 0;
           text-align: left;
         }
       }

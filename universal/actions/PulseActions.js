@@ -137,6 +137,8 @@ export function addEvent(event) {
         if (err) {
           dispatch(addEventFailure(err, event));
         } else {
+          const url = "/project/" + res.body.slug;
+          location.assign(url);
           dispatch(addEventSuccess(res.body));
         }
       });
@@ -176,6 +178,7 @@ export function deleteEvent(event) {
         if (err) {
           dispatch(deleteEventFailure(err, event));
         } else {
+          location.assign('/nasedkin');
           dispatch(deleteEventSuccess(res.body));
         }
       });
@@ -216,6 +219,8 @@ export function editEvent(event) {
         if (err) {
           dispatch(editEventFailure(err, event));
         } else {
+          const url = "/project/" + res.body.slug;
+          location.assign(url);
           dispatch(editEventSuccess(res.body));
         }
       });
