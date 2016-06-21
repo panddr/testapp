@@ -44,7 +44,21 @@ export default class ProjectPage extends Component {
     const related = this.props.events.filter(project => project.artist === artist).filter(project => project.slug != slug);
     this.showRelated(related, categories);
 
-    console.log(categories)
+    this.setState({ loadMore: false });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let { slug } = nextProps.slug;
+    const projectArray = nextProps.events.filter(project => project.slug === slug);
+
+    console.log(nextProps.slug)
+    const project = projectArray[0];
+    const artist = project.artist;
+    const categories = project.categories;
+    const related = nextProps.events.filter(project => project.artist === artist).filter(project => project.slug != slug);
+    this.showRelated(related, categories);
+
+    this.setState({ loadMore: false });
   }
 
   rawMarkup() {

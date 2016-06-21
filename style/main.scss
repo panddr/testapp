@@ -9,6 +9,10 @@ body {
   margin: 0; padding: 0;
   min-width: 320px;
 
+  @include respond-to(xlarge) {
+    font-size: 18px;
+  }
+
   &.hidden {
     overflow: hidden;
   }
@@ -184,6 +188,10 @@ ul {
   @include respond-to(large) {
     margin: auto;
     max-width: 90%;
+  }
+
+  @include respond-to(xlarge) {
+    max-width: 80%;
   }
 
   a,
@@ -442,7 +450,7 @@ p {
     }
 
     @include respond-to(xlarge) {
-      font-size: 3em;
+      max-width: 80%;
     }
 
     > a {
@@ -464,6 +472,10 @@ p {
     margin: auto;
     margin-bottom: $grid*4;
     max-width: 90%;
+  }
+
+  @include respond-to(xlarge) {
+    max-width: 80%;
   }
 
   > .portfolio-links {
