@@ -1,4 +1,4 @@
-- hosts: denden
+- hosts: panddr
   gather_facts: yes
   become: yes
   tasks:
@@ -37,8 +37,8 @@
     npm: path=/var/apps/nb
   - name: npm build prod
     command: /usr/bin/npm run build:prod chdir=/var/apps/nb
-#  - name: npm db setup
-#    command: /usr/bin/npm run db-setup chdir=/var/apps/nb
+  - name: npm db setup
+    command: /usr/bin/npm run db-setup chdir=/var/apps/nb
 
   handlers:
   - name: init rethinkdb
