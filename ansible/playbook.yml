@@ -39,9 +39,14 @@
     command: /usr/bin/npm run build:prod chdir=/var/apps/nb
   - name: npm db setup
     command: /usr/bin/npm run db-setup chdir=/var/apps/nb
+  - name: copy rethinkdb config file
+    copy: src=nginx_nb.conf dest=/etc/nginx/conf.d/nb.conf
+    notify: restart nginx
 
   handlers:
   - name: init rethinkdb
     shell: /etc/init.d/rethinkdb start
   - name: restart rethinkdb
     service: name=rethinkdb state=restarted
+  - name: restart nginx
+    service: name=nginx state=restarted
