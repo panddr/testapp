@@ -213,11 +213,31 @@ ul {
     margin-right: $grid/4;
   }
 
+  section {
+    margin-bottom: $grid*2;
+  }
+
+  p {
+    text-indent: 0;
+    margin-bottom: $grid/2;
+  }
+
   .years {
     display: flex;
+    flex-wrap: wrap;
+
+    max-width: 500px;
 
     input {
-      width: 50%;
+      width: 45%;
+
+      &:first-child {
+        margin-right: $grid/2;
+      }
+
+      &:nth-child(2) {
+        margin-left: $grid/2;
+      }
     }
   }
 

@@ -188,44 +188,59 @@ export default class EventInput extends Component {
       <div>
         <form className='form' encType="multipart/form-data" method="post" action="/api/0/events">
           <fieldset>
-            <input type='text' placeholder='Название проекта' value={this.state.title} onChange={::this.handleTitleChange} />
-            <textarea className="description" placeholder='Описание' value={this.state.description} onChange={::this.handleDescriptionChange} />
-            <Switcher
-              options  = { optionsArtist }
-              type     = 'radio'
-              value    = { this.state.artist }
-              onChange = { this.handleArtistChange.bind(this) } />
-            <div className="grabr-switcher">
-              {this.state.categories.map((category, index) => {
-                const checked = category.checked;
-                return (
-                  <label key = { index } >
-                    <input type="checkbox" checked={checked} value={category.value} onChange={::this.handleCategoriesChange.bind(this, checked, index)} />
-                    { category.labelText }
-                  </label>
-                );
-              })}
-            </div>
-            <div className="years">
-              <input type='text' placeholder='Год' value={this.state.yearStart} onChange={::this.handleYearStartChange} />
-              <input type='text' placeholder='Год окончания' value={this.state.yearEnd} onChange={::this.handleYearEndChange} />
-            </div>
-            <div className="featured">
-              <label>
-                <input type='checkbox' checked={this.state.isFeatured} value={this.state.isFeatured} onChange={::this.handleFeaturedChange} />
-                На главную
-              </label>
-            </div>
-            {this.props.editing ?
-              <div className="portfolio-drop-zone">
-                <Dropzone
-                  onDrop={::this.onDrop}
-                  onImageSubmit={this.props.onImageSubmit}
-                  accept={'image/*'} >
-                  <div>Перетащите картинку сюда или выберите файл.</div>
-                </Dropzone>
+            <section>
+              <input type='text' placeholder='Название проекта' value={this.state.title} onChange={::this.handleTitleChange} />
+            </section>
+            <section>
+              <p className="tip">Добавьте описание проекта (первый параграф показывается большим, остальные параграфы можно будет увидеть, нажав на кнопку «ПОДРОБНЕЕ»):</p>
+              <textarea className="description" placeholder='Описание' value={this.state.description} onChange={::this.handleDescriptionChange} />
+            </section>
+            <section>
+              <p className="tip">Выберите художника:</p>
+              <Switcher
+                options  = { optionsArtist }
+                type     = 'radio'
+                value    = { this.state.artist }
+                onChange = { this.handleArtistChange.bind(this) } />
+            </section>
+            <section>
+              <p className="tip">Выберите одну или несколько категорий, соотвествующих проекту:</p>
+              <div className="portfolio-switcher portfolio-switcher-categories">
+                {this.state.categories.map((category, index) => {
+                  const checked = category.checked;
+                  return (
+                    <label key = { index } >
+                      <input type="checkbox" checked={checked} value={category.value} onChange={::this.handleCategoriesChange.bind(this, checked, index)} />
+                      { category.labelText }
+                    </label>
+                  );
+                })}
               </div>
-              : null}
+            </section>
+            <section>
+              <p className="tip">Выберите год начала и окончания(если требуется) проекта:</p>
+              <div className="years">
+                <input type='text' placeholder='Год' value={this.state.yearStart} onChange={::this.handleYearStartChange} />
+                <input type='text' placeholder='Год окончания' value={this.state.yearEnd} onChange={::this.handleYearEndChange} />
+              </div>
+            </section>
+            <section>
+              <div className="featured">
+                <label>
+                  <input type='checkbox' checked={this.state.isFeatured} value={this.state.isFeatured} onChange={::this.handleFeaturedChange} />
+                  Вывести на главную
+                </label>
+              </div>
+            </section>
+            <div className="portfolio-drop-zone">
+              <p className="tip">Добавьте картинки:</p>
+              <Dropzone
+                onDrop={::this.onDrop}
+                onImageSubmit={this.props.onImageSubmit}
+                accept={'image/*'} >
+                <div>Перетащите картинку сюда или выберите файл.</div>
+              </Dropzone>
+            </div>
             {this.props.images.length > 0 ?
               <div>
                 <ul className="form-images" onDragOver = { this.handleDragOver.bind(this) }>{this.props.images.map((image, index) => {

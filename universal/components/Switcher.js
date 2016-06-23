@@ -40,7 +40,7 @@ class Switcher extends Component {
 
   render() {
     return (
-      <div className="grabr-switcher">
+      <div className="portfolio-switcher">
         { this.renderOptions() }
       </div>
     );
