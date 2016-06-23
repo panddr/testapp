@@ -1,5 +1,6 @@
 - hosts: panddr
   gather_facts: yes
+  user: root
   become: yes
   tasks:
   - name: add panddr user
