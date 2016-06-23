@@ -22,7 +22,7 @@
   - apt: name=git state=present
   - name: install nodejs
     apt: name=nodejs state=present
-  - name: install retghinkdb
+  - name: install rethinkdb
     apt: name=rethinkdb state=present
   - name: install nginx
     apt: name=nginx state=present
@@ -39,7 +39,7 @@
     command: /usr/bin/npm run build:prod chdir=/var/apps/nb
   - name: npm db setup
     command: /usr/bin/npm run db-setup chdir=/var/apps/nb
-  - name: copy rethinkdb config file
+  - name: copy nginx config file
     copy: src=nginx_nb.conf dest=/etc/nginx/conf.d/nb.conf
     notify: restart nginx
 

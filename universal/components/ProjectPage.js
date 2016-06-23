@@ -32,9 +32,7 @@ export default class ProjectPage extends Component {
       deleting: false,
       loadMore: false,
       related: [],
-      projectCategories: [],
-      imgWidthMeta: '',
-      imgHeightMeta: ''
+      projectCategories: []
     };
   }
 
@@ -49,10 +47,6 @@ export default class ProjectPage extends Component {
     this.showRelated(related, categories);
 
     this.setState({ loadMore: false });
-
-    const img = document.querySelectorAll(".project-container ul li .image img")[0];
-    this.setState({ imgWidthMeta: img.naturalWidth });
-    this.setState({ imgHeightMeta: img.naturalHeight });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,7 +89,6 @@ export default class ProjectPage extends Component {
   }
 
   handleConfirm() {
-    console.log(this.state.deleting)
     this.setState({ deleting: !this.state.deleting });
   }
 
@@ -158,19 +151,19 @@ export default class ProjectPage extends Component {
       const y = wHeight/2 - img.offsetTop - imgHeight/2 + window.pageYOffset;
       let scale;
 
-      if (wDimensions > 1) {
-        if (wHeight > imgNaturalHeight) {
-          scale = imgNaturalHeight/imgHeight;
-        } else {
+      if (wDimensions > imgDimensions) {
+        if (imgNaturalHeight > wHeight) {
           scale = wHeight/imgHeight;
+        } else {
+          scale = imgNaturalHeight/imgHeight;
         }
 
         img.setAttribute('style','transform:translate(' + x + 'px,' + y + 'px) scale(' + scale + '); -webkit-transform:translate(' + x + 'px,' + y + 'px scale(' + scale + '); width:100%; height:auto;');
       } else {
-        if (wWidth > imgNaturalWidth) {
-          scale = imgNaturalWidth/imgWidth;
-        } else {
+        if (imgNaturalWidth > wWidth) {
           scale = wWidth/imgWidth;
+        } else {
+          scale = imgNaturalWidth/imgWidth;
         }
 
         img.setAttribute('style','transform:translate(' + x + 'px,' + y + 'px) scale(' + scale + '); -webkit-transform:translate(' + x + 'px,' + y + 'px scale(' + scale + '); width:100%; height:auto;');
@@ -220,13 +213,13 @@ export default class ProjectPage extends Component {
           "og:url": urlMeta,
           "og:description": descriptionShortent,
           "og:image": imgMeta,
-          "og:image:width": this.state.imgWidthMeta,
-          "og:image:height": this.state.imgHeightMeta,
+          "og:image:width": project.coverWidth,
+          "og:image:height": project.coverHeight,
           "twitter:title": project.title,
           "twitter:description": descriptionShortent,
           "twitter:image": imgMeta,
-          "twitter:image:width": this.state.imgWidthMeta,
-          "twitter:image:height": this.state.imgHeightMeta,
+          "twitter:image:width": project.coverWidth,
+          "twitter:image:height": project.coverHeight,
           "twitter:card": "summary_large_image"
         }
       }
@@ -270,6 +263,8 @@ export default class ProjectPage extends Component {
                       description={project.description}
                       yearStart={project.yearStart}
                       yearEnd={project.yearEnd}
+                      coverWidth={project.coverWidth}
+                      yearHeight={project.yearHeight}
                       artist={project.artist}
                       isFeatured={project.isFeatured}
                       categories={project.categories}

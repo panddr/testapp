@@ -21,6 +21,10 @@ export default class EventInput extends Component {
   componentDidMount() {
     this.placeholder = document.createElement("li");
     this.placeholder.className = "placeholder";
+
+    setTimeout(() => {
+      this.handleCoverDimensions();
+    }, 300);
   }
 
   constructor(props, context) {
@@ -33,7 +37,9 @@ export default class EventInput extends Component {
       artist: this.props.artist || 'nasedkin',
       categories: this.props.categories || optionsCategories,
       yearStart: this.props.yearStart || '',
-      yearEnd: this.props.yearEnd || ''
+      yearEnd: this.props.yearEnd || '',
+      coverWidth: this.props.coverWidth || '',
+      coverHeight: this.props.coverHeight || ''
     };
   }
 
@@ -48,9 +54,21 @@ export default class EventInput extends Component {
     if (errors && errors.length > 0) {
       this.setState({errors: errors});
     } else {
-      this.props.onSubmit({title: this.state.title, description: this.state.description, artist: this.state.artist, isFeatured: this.state.isFeatured, categories: this.state.categories, yearStart: this.state.yearStart, yearEnd: this.state.yearEnd, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
+      this.props.onSubmit({title: this.state.title, description: this.state.description, artist: this.state.artist, isFeatured: this.state.isFeatured, coverWidth: this.state.coverWidth, coverHeight: this.state.coverHeight, categories: this.state.categories, yearStart: this.state.yearStart, yearEnd: this.state.yearEnd, userId: 'f5f5756d-628b-4eee-85fb-a0b32b317d42', images: this.props.images});
       this.setState({title: ''});
     }
+  }
+
+  handleCoverDimensions() {
+    const img = document.querySelectorAll(".image img")[0];
+    if (img) {
+      this.setState({ coverWidth: img.naturalWidth.toString() });
+      this.setState({ coverHeight: img.naturalHeight.toString() });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.handleCoverDimensions();
   }
 
   handleTitleChange(e) {

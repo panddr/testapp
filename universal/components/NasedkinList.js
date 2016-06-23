@@ -1,6 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import { Link } from 'react-router';
 import EventItem from './EventItem';
+import DocumentMeta from 'react-document-meta';
 
 export default class NasedkinList extends Component {
   static propTypes = {
@@ -39,10 +40,37 @@ export default class NasedkinList extends Component {
     const { events, actions } = this.props;
     const nasedkin = events.filter(row => row.artist == 'nasedkin').filter(row => row.isFeatured == true);
 
+    const meta = {
+      title: 'Владимир Никитович Наседкин',
+      description: 'Российский художник, живописец, график, скульптор, фотограф, автор объектов и инсталляций.',
+      canonical: 'http://nasedkin-badanina.com/nasedkin/',
+      meta: {
+        charset: 'utf-8',
+        name: {
+          keywords: 'Наседкин,Владимир,Баданина,Татьяна'
+        },
+        property: {
+          "og:title": 'Владимир Никитович Наседкин',
+          "og:url": 'http://nasedkin-badanina.com/nasedkin/',
+          "og:description": 'Российский художник, живописец, график, скульптор, фотограф, автор объектов и инсталляций.',
+          "og:image": 'https://upload.wikimedia.org/wikipedia/commons/0/02/Nasedkin_Vladimir_artist.jpg',
+          "og:image:width": '662',
+          "og:image:height": '778',
+          "twitter:title": 'Владимир Никитович Наседкин',
+          "twitter:description": 'Российский художник, живописец, график, скульптор, фотограф, автор объектов и инсталляций.',
+          "twitter:image": 'https://upload.wikimedia.org/wikipedia/commons/0/02/Nasedkin_Vladimir_artist.jpg',
+          "twitter:image:width": '662',
+          "twitter:image:height": '778',
+          "twitter:card": "summary_large_image"
+        }
+      }
+    };
+
     let editable = true;
 
     return (
       <section className='portfolio-project-list'>
+        <DocumentMeta {...meta} />
         <header className='portfolio-header'>
           <div className='portfolio-links'>
             <h1><Link to='/nasedkin' activeClassName='active' onClick={::this.filterByCategoryAll.bind(this, nasedkin)}>Владимир Наседкин</Link></h1>

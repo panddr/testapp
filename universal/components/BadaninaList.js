@@ -1,6 +1,7 @@
 import React, {PropTypes, Component} from 'react';
 import EventItem from './EventItem';
 import { Link } from 'react-router';
+import DocumentMeta from 'react-document-meta';
 
 export default class BadaninaList extends Component {
   static propTypes = {
@@ -40,8 +41,35 @@ export default class BadaninaList extends Component {
     const badanina = events.filter(row => row.artist == 'badanina' ).filter(row => row.isFeatured == true);
     let editable = true;
 
+    const meta = {
+      title: 'Татьяна Васильевна Баданина',
+      description: 'Российский художник, живописец, график, автор объектов и инсталляций.',
+      canonical: 'http://nasedkin-badanina.com/badanina/',
+      meta: {
+        charset: 'utf-8',
+        name: {
+          keywords: 'Наседкин,Владимир,Баданина,Татьяна'
+        },
+        property: {
+          "og:title": 'Татьяна Васильевна Баданина',
+          "og:url": 'http://nasedkin-badanina.com/badanina/',
+          "og:description": 'Российский художник, живописец, график, автор объектов и инсталляций.',
+          "og:image": 'https://upload.wikimedia.org/wikipedia/commons/1/12/%D0%A2%D0%B0%D0%BD%D1%8F_%D0%91%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%BD%D0%B0_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D0%BD%D0%B0.jpg',
+          "og:image:width": '800',
+          "og:image:height": '1200',
+          "twitter:title": 'Татьяна Васильевна Баданина',
+          "twitter:description": 'Российский художник, живописец, график, автор объектов и инсталляций.',
+          "twitter:image": 'https://upload.wikimedia.org/wikipedia/commons/1/12/%D0%A2%D0%B0%D0%BD%D1%8F_%D0%91%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%BD%D0%B0_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D0%BD%D0%B0.jpg',
+          "twitter:image:width": '800',
+          "twitter:image:height": '1200',
+          "twitter:card": "summary_large_image"
+        }
+      }
+    };
+
     return (
       <section className='portfolio-project-list'>
+        <DocumentMeta {...meta} />
         <header className='portfolio-header'>
           <div className='portfolio-links'>
             <h1><Link to='/nasedkin' activeClassName='active'>Владимир Наседкин</Link></h1>
@@ -51,7 +79,7 @@ export default class BadaninaList extends Component {
         <div>
           <p className="bio">
             <span>Татьяна Васильевна Баданина&nbsp;&mdash; российский </span>
-              <a target="_blank" href="https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D1%81%D0%B5%D0%B4%D0%BA%D0%B8%D0%BD,_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9D%D0%B8%D0%BA%D0%B8%D1%82%D0%BE%D0%B2%D0%B8%D1%87">художник</a>
+              <a target="_blank" href="https://ru.wikipedia.org/wiki/%D0%91%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%BD%D0%B0,_%D0%A2%D0%B0%D1%82%D1%8C%D1%8F%D0%BD%D0%B0_%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%B5%D0%B2%D0%BD%D0%B0">художник</a>
               <span>, </span>
               <Link to={'/badanina/painting'} activeClassName='active' onClick={::this.filterByCategory.bind(this, badanina, "painting")}>
                 живописец
