@@ -244,7 +244,7 @@ export default class EventInput extends Component {
             {this.props.images.length > 0 ?
               <div>
                 <ul className="form-images" onDragOver = { this.handleDragOver.bind(this) }>{this.props.images.map((image, index) => {
-                  const url = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
+                  const url = 'https://s3-eu-west-1.amazonaws.com/nasedkinbadanina/uploads/images/' + image.key;
 
                   return (
                     <li

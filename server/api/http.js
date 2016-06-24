@@ -19,7 +19,7 @@ export function getEvents(req, res) {
 export function uploadImage(req, res) {
   const options = s3({
     dirname: 'uploads/images',
-    bucket: 'projectsuploads',
+    bucket: 'nasedkinbadanina',
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: 'eu-west-1',
@@ -30,6 +30,8 @@ export function uploadImage(req, res) {
   const uploading = multer({ storage: options }).array('file');
   uploading(req, res, err => {
     let files = []
+
+    console.log(err)
 
     const p1 = new Promise((resolve, reject) => {
       req.files.map((file) => {

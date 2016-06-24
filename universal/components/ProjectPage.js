@@ -197,7 +197,7 @@ export default class ProjectPage extends Component {
 
     const descriptionShortent = project.description.substring(0, 160);
     const urlMeta = 'http://nasedkin-badanina.com/project/' + slug;
-    const imgMeta = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + project.images[0].key;
+    const imgMeta = 'https://s3-eu-west-1.amazonaws.com/nasedkinbadanina/uploads/images/' + project.images[0].key;
 
     const meta = {
       title: project.title,
@@ -306,7 +306,7 @@ export default class ProjectPage extends Component {
             </div>
             {project.images.length > 0 ?
               <ul>{project.images.map((image, index) => {
-                const imageUrl = 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + image.key;
+                const imageUrl = 'https://s3-eu-west-1.amazonaws.com/nasedkinbadanina/uploads/images/' + image.key;
                 const key = image.key
                 return (
                   <li key={index} className={image.size}>

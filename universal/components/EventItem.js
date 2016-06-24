@@ -54,7 +54,7 @@ export default class EventItem extends Component {
   render() {
     const { id, event, editEvent, deleteEvent } = this.props;
 
-    const imageUrl = (event.images.length > 0) ? 'https://s3-eu-west-1.amazonaws.com/projectsuploads/uploads/images/' + event.images[0].key : null;
+    const imageUrl = (event.images.length > 0) ? 'https://s3-eu-west-1.amazonaws.com/nasedkinbadanina/uploads/images/' + event.images[0].key : null;
 
     const link = '/project/' + event.slug;
 
