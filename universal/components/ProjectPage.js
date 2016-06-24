@@ -291,12 +291,13 @@ export default class ProjectPage extends Component {
               <div className={ this.state.loadMore ? 'description active' : 'description' }>
                 <h1>
                   <span dangerouslySetInnerHTML={this.rawMarkupTitle()} />
-                  <sup>
-                    <span className="date">{project.yearStart}</span>
+                  ,&nbsp;
+                  <span className="date">
+                    <span>{project.yearStart}</span>
                     {project.yearEnd ?
-                      <span className="date">&ndash;{project.yearStart}</span>
+                      <span>&ndash;{project.yearStart}</span>
                       : null}
-                  </sup>
+                  </span>
                 </h1>
                 <div className="text" dangerouslySetInnerHTML={this.rawMarkup()} />
                 <button className="button-load-more" onClick={::this.handleLoadMore}>Подробнее</button>
