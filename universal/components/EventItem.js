@@ -84,7 +84,7 @@ export default class EventItem extends Component {
               : null}
             <span className="date">{event.yearStart}</span>
             {event.yearEnd ?
-              <span className="date">&ndash;{event.yearStart}</span>
+              <span className="date">&ndash;{event.yearEnd}</span>
               : null}
           </Link>
         </article>
