@@ -295,7 +295,7 @@ export default class ProjectPage extends Component {
                   <span className="date">
                     <span>{project.yearStart}</span>
                     {project.yearEnd ?
-                      <span>&ndash;{project.yearStart}</span>
+                      <span>&ndash;{project.yearEnd}</span>
                       : null}
                   </span>
                 </h1>
