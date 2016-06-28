@@ -49,9 +49,6 @@ export function handleRender(req, res) {
       );
 
       let head = DocumentMeta.renderAsHTML();
-      if (head) {
-        console.log('Title', head.title);
-      }
 
       // Send the rendered page back to the client with the initial state
       res.render('index', { isProd: (!isDev), html: html, head: head, initialState: JSON.stringify(store.getState()) });
