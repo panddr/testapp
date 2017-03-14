@@ -116,7 +116,6 @@ export default class NasedkinList extends Component {
         <footer className="portfolio-footer">
           <a target="_blank" href="https://ru.wikipedia.org/wiki/%D0%9D%D0%B0%D1%81%D0%B5%D0%B4%D0%BA%D0%B8%D0%BD,_%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%9D%D0%B8%D0%BA%D0%B8%D1%82%D0%BE%D0%B2%D0%B8%D1%87#.D0.9A.D0.9E.D0.9B.D0.9B.D0.95.D0.9A.D0.A6.D0.98.D0.98">Выставки</a>
           <a href="mailto:nasedkin@gmail.com">nasedkin@gmail.com</a>
-          +7 925 186 60 02
         </footer>
       </section>
     );
